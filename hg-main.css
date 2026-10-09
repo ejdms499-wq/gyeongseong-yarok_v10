@@ -1,0 +1,62 @@
+/* 본지 07 독자 호외 v3 — 인쇄소 사진 속 빨랫줄에 진짜 호외가 널림. 글 칸은 본지 기사 칸과 같은 결 */
+.rhg{margin-top:30px}
+.rhg-hd{display:flex;align-items:baseline;gap:16px;border-bottom:1px solid var(--rule);padding-bottom:8px}
+.rhg-hd>b{background:var(--ink);color:var(--paper);font-family:var(--serif);font-weight:900;font-size:15px;letter-spacing:.4em;padding:5px 8px 4px 14px}
+.rhg-hd span{font-family:var(--myeongjo);font-size:13px;letter-spacing:.06em;color:#3a3128}
+.rhg-hd em{margin-left:auto;font-style:normal;font-family:var(--myeongjo);font-size:11.5px;letter-spacing:.06em;color:var(--fade)}
+.rhg-body{display:grid;grid-template-columns:minmax(0,.78fr) minmax(0,2fr);gap:40px;align-items:stretch;padding:24px 0 6px}
+
+.rhg-text{display:flex;flex-direction:column;justify-content:center}
+.rhg-k{font-family:var(--myeongjo);font-size:12px;letter-spacing:.3em;color:#4a3f31}
+.rhg-text h3{margin-top:12px;font-family:var(--serif);font-weight:900;font-size:clamp(24px,calc(2.1vw / var(--ykz, 1)),31px);line-height:1.32;color:var(--ink)}
+.rhg-text .rd-desc{margin-top:12px}
+.rhg-tally{margin-top:14px;padding-top:9px;border-top:1px dotted rgba(58,49,40,.45);font-family:var(--myeongjo);font-size:12px;letter-spacing:.06em;color:#4a3f31}
+.rhg-tally b{font-family:var(--serif);font-weight:900;color:var(--ink)}
+.rhg-text .rd-links{margin-top:12px}
+
+/* 인쇄소 사진판 */
+.rhg-room{position:relative;display:block;aspect-ratio:16/8.2;overflow:hidden;background:#100d0a;text-decoration:none;color:inherit;border:1px solid rgba(58,49,40,.7);outline:1px solid rgba(58,49,40,.35);outline-offset:3px}
+.rhg-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 60%;filter:grayscale(1) sepia(.45) contrast(1.08) brightness(.62);transform:scale(1.04);transition:filter 1s ease,transform 8s ease}
+.rhg-room:hover .rhg-photo{filter:grayscale(1) sepia(.45) contrast(1.08) brightness(.74);transform:scale(1.08)}
+.rhg-shade{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 90% at 50% 20%,rgba(255,226,170,.16),transparent 60%),linear-gradient(180deg,rgba(10,8,5,.15),rgba(10,8,5,.55))}
+.rhg-cap{position:absolute;left:16px;bottom:12px;z-index:3;font-family:var(--myeongjo);font-size:11px;letter-spacing:.16em;color:rgba(232,220,192,.62)}
+.rhg-hint{position:absolute;right:16px;bottom:12px;z-index:3;font-family:var(--myeongjo);font-size:11.5px;letter-spacing:.16em;color:rgba(232,220,192,.85);opacity:0;transform:translateY(4px);transition:opacity .4s,transform .4s}
+.rhg-room:hover .rhg-hint{opacity:1;transform:none}
+.rhg-room .hj.gloss{color:inherit!important}
+
+/* 빨랫줄 */
+.rhg-line{position:absolute;left:0;right:0;top:0;bottom:0;z-index:2}
+.rhg-line .rope{position:absolute;left:-3%;right:-3%;top:-14%;height:34%;border-bottom:1.6px solid rgba(232,214,170,.75);border-radius:0 0 50% 50%/0 0 100% 100%;filter:drop-shadow(0 3px 2px rgba(0,0,0,.5))}
+.rhg-line .sheets{position:absolute;inset:0}
+
+/* 널린 호외 한 장 */
+.hs{position:absolute;width:21%;aspect-ratio:3/4.1;transform-origin:50% 0;transform:rotate(var(--r,0deg));transition:transform .9s cubic-bezier(.3,1.4,.5,1),filter .3s;text-decoration:none;color:#1e1913;cursor:pointer}
+.rhg-room:hover .hs{animation:hsSway 3.4s ease-in-out infinite;animation-delay:var(--d,0s)}
+.hs:hover{z-index:4;animation:none!important;transform:rotate(0) translateY(-6px) scale(1.06)}
+@keyframes hsSway{0%,100%{transform:rotate(var(--r,0deg))}50%{transform:rotate(calc(var(--r,0deg) * -1 + .5deg))}}
+.hs-pin{position:absolute;left:50%;top:-8px;width:9px;height:24px;margin-left:-4.5px;z-index:2;background:linear-gradient(90deg,#6d5236,#b8966a 45%,#5e4630);border-radius:1.5px;box-shadow:0 2px 3px rgba(0,0,0,.55)}
+.hs-pin::after{content:"";position:absolute;left:0;right:0;top:10px;height:1px;background:rgba(0,0,0,.4)}
+.hs-p{position:absolute;inset:0;display:flex;flex-direction:column;padding:8px 8px 7px;background:#efe6d0;box-shadow:0 2px 2px rgba(0,0,0,.35),0 18px 22px -10px rgba(0,0,0,.7);overflow:hidden}
+.hs-p::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(100deg,rgba(255,255,255,.12),transparent 40%,rgba(0,0,0,.12)),radial-gradient(ellipse at 40% 30%,transparent 50%,rgba(110,80,40,.2));mix-blend-mode:multiply}
+.hs-mh{display:flex;align-items:center;justify-content:center;gap:4px;padding:0 0 3px;border-bottom:3px double currentColor}
+.hs-mh b{font-family:var(--serif);font-weight:900;font-size:clamp(9px,.8vw,12px);letter-spacing:.06em}
+.hs-mh em{font-style:normal;padding:1px 2px;background:#1e1913;color:#efe6d0;font-family:var(--serif);font-weight:900;font-size:7px;line-height:1.05;writing-mode:vertical-rl}
+.hs-h{margin-top:6px;font-family:var(--serif);font-weight:900;font-size:clamp(10px,.88vw,13.5px);line-height:1.28;letter-spacing:-.01em;word-break:keep-all}
+.hs-art{display:block;margin-top:5px;flex:1;min-height:0;background:#cbbf9f center/cover no-repeat;filter:grayscale(1) sepia(.3) contrast(1.15);border:1px solid rgba(30,25,19,.6)}
+.hs-cols{display:block;height:16%;margin-top:5px;background:repeating-linear-gradient(180deg,rgba(30,25,19,.32) 0 1px,transparent 1px 4px);-webkit-mask:linear-gradient(90deg,#000 0 48%,transparent 48% 52%,#000 52%);mask:linear-gradient(90deg,#000 0 48%,transparent 48% 52%,#000 52%)}
+.hs-tag{position:absolute;right:5px;top:5px;padding:1px 3px 0;font-family:var(--myeongjo);font-size:7px;letter-spacing:.1em;border:1px solid currentColor;opacity:.75}
+.hs.horror{color:#e6dac0}.hs.horror .hs-p{background:#211c16}.hs.horror .hs-mh em{background:#e6dac0;color:#211c16}.hs.horror .hs-art{filter:grayscale(1) invert(.9) sepia(.3);border-color:rgba(230,218,192,.5)}
+.hs.horror .hs-cols{background:repeating-linear-gradient(180deg,rgba(230,218,192,.3) 0 1px,transparent 1px 4px)}
+.hs.breaking .hs-mh{border-bottom-color:#8a2a21}.hs.breaking .hs-mh em{background:#8a2a21}.hs.breaking .hs-h{font-size:clamp(11px,1vw,15px)}
+.hs.mine .hs-tag{background:#8a2a21;color:#efe6d0;border-color:#8a2a21;opacity:1}
+/* 새로 널릴 때 */
+.hs.fresh{animation:hsDrop 1.1s cubic-bezier(.3,1.5,.5,1) both!important}
+@keyframes hsDrop{0%{transform:translateY(-120%) rotate(-14deg);opacity:0}60%{opacity:1}100%{transform:rotate(var(--r,0deg))}}
+
+/* 넘어갈 때 종이 */
+.rhg-room.press .rhg-photo{filter:grayscale(1) sepia(.45) brightness(1.1)}
+
+@media (max-width:980px){.rhg-body{grid-template-columns:1fr}.rhg-room{aspect-ratio:16/10}.hs{width:27%}}
+@media (prefers-reduced-motion:reduce){.hs,.rhg-photo{transition:none}.rhg-room:hover .hs{animation:none}}
+.hs-p{padding-top:15px}
+.hs.horror .hs-art{filter:grayscale(1) sepia(.3) contrast(1.1) brightness(.85)}

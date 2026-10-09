@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- =========================================================================
+     경성야록 부록 — 경성사건박람회 '회장 거리'
+     ▶ fair.html : 화면 뼈대
+     -------------------------------------------------------------------------
+     메인에서 입장권 반권을 뜨드면 이 페이지로 옵니다. (index.html → fair.html?from=main)
+     자정의 박람회장을 왼쪽에서 오른쪽으로 '거러 드러가는' 페이지입니다.
+       · 마우스 휠(아래로) / 화살표 키 / 손가락으로 밀기 → 회장 거리를 따라 걸음
+       · 거리 순서:  정문 → 안내소 → 네 관(문학 · 창가 · 무대 · 미술) → 게시판(사건 족보) → 출구
+       · 관 앞 입간판의 '드러가기' → 관 안(어두운 진열실)이 열림 → 나오면 그 관 전구에 불이 드러옴
+     파일 4개가 한 세트 (index.html 과 같은 폴더)
+       fair.html       ← 지금 이 파일 (칸만 잡아 둠)
+       fair.css        ← 모양 (메인과 같은 글꼴 · 먹색 · 바랜 종이색)
+       fair-data.js    ← 관 · 작품 글 (당시 말투 / 현대어)
+     미드저니 그림을 넣으면 자동으로 쓰이는 자리 (없으면 코드 그림 그대로)
+       assets/expo/mj-far.png        먼 풍경 (가로로 긴 그림)
+       assets/expo/mj-gate.png       정문
+       assets/expo/mj-pav-literature.png · -music · -stage · -art   네 관 건물
+       assets/expo/mj-hall.png       관 안 진열실 벽
+       fair.js         ← 걷기 · 건물 그리기 · 전구 · 관 안 · 소리
+     사진: assets/expo/ (1929 실물 자료) — 기존 파일은 손대지 않음
+     ========================================================================= -->
+<meta charset="UTF-8">
+<script src="yk-zoom.js" data-yk-fit-h="900"></script><!-- 화면 배율 120% -->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>경성야록 부록 · 경성사건박람회 회장</title>
+<!-- 글꼴: 메인과 똑같이 Noto Serif KR(제목) + 나눔명조(본문) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Serif+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fair.css">
+</head>
+<body>
+
+<!-- ① 거리: 이 칸의 높이만큼 아래로 굴리면, 안쪽 화면(stage)은 고정된 채 오른쪽으로 걸어감 -->
+<main class="walk" id="walk" aria-label="경성사건박람회 회장 거리">
+  <div class="stage" id="stage">
+
+    <!-- 하늘 · 먼 풍경 · 안개 (뒤에서 앞 순서. 멀수록 천천히 움직임) -->
+    <div class="sky" aria-hidden="true"><i class="moon"></i></div>
+    <div class="far" id="far" aria-hidden="true"></div>          <!-- 1929 경성 조감도를 아주 어둡게 깐 먼 풍경 -->
+    <div class="fog f1" aria-hidden="true"></div>
+    <div class="fog f2" aria-hidden="true"></div>
+    <div class="ground" aria-hidden="true"></div>               <!-- 자갈 깔린 회장 길 -->
+
+    <!-- 거리: 정문 · 안내소 · 네 관 · 게시판 · 출구가 fair.js 로 그려져 들어감 -->
+    <div class="track" id="track"></div>
+
+    <!-- 먼지 알갱이 · 필름 결 (화면 전체를 옛 활동사진처럼) -->
+    <div class="dust" id="dust" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
+
+    <!-- 가까운 가로등 줄 (가장 빨리 지나감) -->
+    <div class="near" id="near" aria-hidden="true"></div>
+
+    <!-- 위 · 아래 띠 -->
+    <header class="hud-top">
+      <a href="index.html#appendix" class="hud-back"><span class="hj" data-ko="본지로 돌아가기">본지로 도라가기</span></a>
+      <p class="hud-title"><span class="hj" data-ko="경성사건박람회 · 자정 개장">경성사건박람회 · 자정 개장</span></p>
+      <button type="button" class="hud-sound" id="soundBtn" aria-pressed="false"><span class="hj" data-ko="소리 켜기">소리 켜기</span></button>
+    </header>
+    <footer class="hud-bottom">
+      <!-- 불 켜진 관: 전구 네 개 -->
+      <p class="lit" id="lit" aria-live="polite"></p>
+      <!-- 지금 어디쯤: 거리 지도 줄 -->
+      <ol class="where" id="where" aria-label="회장 거리 순서"></ol>
+      <p class="hint" id="hint"><span class="hj" data-ko="아래로 굴리면 회장 안으로 걸어 들어갑니다">아래로 굴리면 회장 안으로 거러 드러가오</span></p>
+    </footer>
+  </div>
+</main>
+
+<!-- ② 관 안: 어두운 진열실 (드러가기를 누르면 열림) -->
+<section class="hall" id="hall" hidden aria-modal="true" role="dialog" aria-labelledby="hallName">
+  <div class="hall-room">
+    <header class="hall-head">
+      <h2 class="hall-name" id="hallName"></h2>
+      <p class="hall-kind" id="hallKind"></p>
+      <button type="button" class="hall-out" id="hallOut"><span class="hj" data-ko="관 밖으로 나가기">관 밧그로 나가기</span></button>
+    </header>
+    <!-- 도슨트 한마디 + 숨은 이야기 (관마다 다름) -->
+    <div class="docent" id="docent"></div>
+    <!-- 유리 진열장들 -->
+    <div class="cases" id="cases"></div>
+  </div>
+</section>
+
+<!-- ②-2 안내소: 1929년 조선박람회 실제 정보 (fair.js ⑦-2 가 채움) -->
+<section class="hall info" id="info" hidden aria-modal="true" role="dialog" aria-label="안내소"></section>
+
+<!-- ②-3 큰 화면 + 현상 렌즈 (미술관 · 안내소 실물 자료) -->
+<section class="viewer" id="viewer" hidden aria-modal="true" role="dialog" aria-label="크게 보기"></section>
+
+<!-- ③ 입장 장면: 깜깜한 데서 동그랗게 열림 (옛 활동사진의 원형 열림) -->
+<div class="iris" id="iris" aria-hidden="true"></div>
+
+<script src="fair-data.js"></script>
+<script src="fair.js?v=2"></script>
+<script src="yk-guide.js?v=15"></script>
+</body>
+</html>

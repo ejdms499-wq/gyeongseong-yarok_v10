@@ -1,0 +1,86 @@
+/* 본지 06 편집국 칸 (응접실 자리) — 부록 칸과 짝: 사진판 + 귀퉁이에 꽂힌 쪽지 + 글 */
+.rd-desk{display:flex;flex-direction:column}
+.dk-plate{position:relative;display:block;aspect-ratio:16/8;overflow:hidden;background:#0d0b08;border:1px solid rgba(58,49,40,.6);outline:1px solid rgba(58,49,40,.35);outline-offset:3px}
+.dk-plate img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) sepia(.38) contrast(1.1) brightness(.84);transition:transform 6s ease}
+.dk-plate:hover img,.dk-plate:focus-visible img{transform:scale(1.05)}
+/* 그림이 없을 때: 어두운 방에 등불 하나 */
+.dk-lamp{position:absolute;inset:0;pointer-events:none;background:
+  radial-gradient(ellipse 30% 42% at 70% 40%,rgba(226,190,128,.30),rgba(226,190,128,.08) 55%,transparent 75%),
+  radial-gradient(ellipse 60% 18% at 70% 78%,rgba(226,190,128,.10),transparent 70%)}
+.dk-plate img~.dk-lamp{display:none}
+.dk-plate::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;background:linear-gradient(90deg,rgba(8,6,4,.62),rgba(8,6,4,.1) 60%),radial-gradient(ellipse at 50% 50%,transparent 55%,rgba(0,0,0,.45))}
+.dk-plate .ap-cap{left:auto;right:20px;text-align:right;width:auto;min-width:9em}
+.dk-plate .ap-cap>span{left:auto;right:0;white-space:nowrap}
+.dk-plate:hover .ap-cap .a{opacity:0}.dk-plate:hover .ap-cap .b{opacity:1;transition-delay:.5s}
+.dk-plate .ap-src{left:auto;right:20px}
+.dk-plate.has-art .ap-src{color:rgba(232,220,192,.75)}
+
+/* 등잔 당김줄 — 사진 속 등갓 아래 */
+.dk-chain{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;overflow:visible}
+.dk-chain .ch-g{fill:#8f7a52;transform-box:view-box;transform-origin:1252px 238px;transition:transform .5s cubic-bezier(.3,1.6,.5,1),fill 1s}
+.dk-chain .ch-pull{fill:#a88d5c;stroke:rgba(20,14,8,.6);stroke-width:1}
+.dk-chain .ch-hi{fill:rgba(255,240,200,.55)}
+.dk-plate:hover .ch-g{animation:chSway 2.8s ease-in-out infinite}
+.dk-plate.pull .ch-g{animation:none;transform:translateY(34px);transition:transform .16s ease-in}
+.dk-plate.lit .ch-g{fill:#c9ab6e}
+.dk-plate.lit .ch-pull{fill:#d8bc80}
+@keyframes chSway{0%,100%{transform:rotate(0)}30%{transform:rotate(1.6deg)}70%{transform:rotate(-1.4deg)}}
+.dk-plate .ap-cap .c{opacity:0}
+.dk-plate.lit .ap-cap .a,.dk-plate.lit .ap-cap .b{opacity:0!important}
+.dk-plate.lit .ap-cap .c{opacity:1;transition-delay:.35s}
+
+/* 판: 평소엔 불 꺼진 편집국 · 출입증을 보이면 불이 켜짐 */
+.dk-plate img{filter:grayscale(1) sepia(.42) contrast(1.15) brightness(.4);transition:transform 6s ease,filter 1.1s ease}
+.dk-plate:hover img{filter:grayscale(1) sepia(.42) contrast(1.15) brightness(.5)}
+.dk-plate.lit img{filter:grayscale(.55) sepia(.5) contrast(1.06) brightness(1.02)}
+.dk-plate .dk-glow{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0;transition:opacity 1.1s ease;
+  background:radial-gradient(ellipse 16% 34% at 79% 46%,rgba(255,224,150,.32),transparent 72%),radial-gradient(ellipse 34% 14% at 72% 86%,rgba(255,224,150,.12),transparent 70%)}
+.dk-plate.lit .dk-glow{opacity:1}
+
+.rd-desk .rd-text{margin-top:26px}
+.dk-hd{margin-top:22px;font-family:var(--myeongjo);font-weight:800;font-size:12px;letter-spacing:.32em;color:var(--fade)}
+.dk-list{list-style:none;margin:8px 0 0;padding:0;border-top:1px solid var(--rule)}
+.dk-list li{border-bottom:1px dotted rgba(58,49,40,.45)}
+.dk-list a{display:flex;align-items:baseline;gap:14px;padding:10px 2px 9px;transition:background .25s}
+.dk-list a:hover{background:rgba(58,49,40,.06)}
+.dk-list time{flex:none;min-width:84px;font-family:var(--myeongjo);font-size:12px;letter-spacing:.06em;color:var(--fade)}
+.dk-list b{flex:1;min-width:0;font-family:var(--serif);font-weight:700;font-size:14.5px;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dk-list em{flex:none;font-style:normal;font-family:var(--myeongjo);font-size:11.5px;color:var(--fade)}
+.dk-none{padding:11px 2px 10px;font-family:var(--myeongjo);font-size:13px;color:var(--fade)}
+@media (max-width:900px){.rd-desk{margin-top:40px}}
+@media (prefers-reduced-motion:reduce){.dk-plate *{transition:none!important;animation:none!important}}
+
+/* ── 광고 ③ 심인 「사람을 차즘」 → seek.html ── 손을 대면 「당신을」, 누르면 「당신을 차잣소」 */
+.ad2.sk3 .o.v2{opacity:1!important;transition:none}
+.ad2.sk3 .v2-t{font-size:19px}
+.ad2.sk3 .v2-t u{position:relative;height:1.08em}
+.ad2.sk3 .v2-t u.sp{height:.32em}
+.ad2.sk3 .sw i{position:absolute;left:50%;top:0;transform:translateX(-50%);font-style:normal;transition:opacity .7s ease,filter .7s ease}
+.ad2.sk3 .sw i:first-child{position:relative;left:auto;transform:none;display:block}
+.ad2.sk3 .sw i+i{opacity:0;filter:blur(2px)}
+.ad2.sk3 .sw.tail{height:0;width:1.2em;overflow:hidden;transition:height .5s ease}
+/* 손을 대면: 사람 → 당신 (한 자씩 늦게) */
+.ad2.sk3:hover .sw:nth-child(-n+2) i:first-child,.ad2.sk3:focus-visible .sw:nth-child(-n+2) i:first-child,.ad2.sk3.got .sw i:first-child{opacity:0;filter:blur(2px)}
+.ad2.sk3:hover .sw:nth-child(-n+2) i+i,.ad2.sk3:focus-visible .sw:nth-child(-n+2) i+i,.ad2.sk3.got .sw i+i{opacity:1;filter:none}
+.ad2.sk3 .sw:nth-child(2) i{transition-delay:.18s}
+/* 누르면: 즘 → 잣, 소 */
+.ad2.sk3 .sw:nth-child(6) i{transition-delay:.05s}
+.ad2.sk3.got .sw.tail{height:1.08em}
+.ad2.sk3.got .sw.tail i+i{transition-delay:.35s}
+.ad2.sk3 .v2-d{position:relative;height:1.6em;width:100%}
+.ad2.sk3 .v2-d>span{position:absolute;left:0;right:0;top:0;transition:opacity .6s ease}
+.ad2.sk3 .d2,.ad2.sk3 .d3{opacity:0}
+.ad2.sk3:hover .d1,.ad2.sk3:focus-visible .d1{opacity:0}
+.ad2.sk3:hover .d2,.ad2.sk3:focus-visible .d2{opacity:1;transition-delay:.35s}
+.ad2.sk3.got .d1,.ad2.sk3.got .d2{opacity:0!important}
+.ad2.sk3.got .d3{opacity:1;transition-delay:.6s;color:#efe4cb}
+/* 넘어갈 때: 종이 한 장이 덮임 */
+.sk-wipe{position:fixed;inset:0;z-index:9999;background:#e7dbc2;opacity:0;pointer-events:none;transition:opacity .55s ease}
+.sk-wipe.on{opacity:1}
+@media (prefers-reduced-motion:reduce){.ad2.sk3 *{transition:none!important}}
+
+/* 특전 줄 — 편집국 출입 암호 */
+.dk-key{margin-top:10px;font-family:var(--myeongjo);font-size:13px;line-height:1.7;color:#2b2219}
+.dk-key b{display:inline-block;margin-right:8px;padding:1px 6px 0;background:var(--ink);color:var(--paper);font-weight:800;font-size:11px;letter-spacing:.2em}
+.dk-key strong{font-family:var(--serif);font-weight:900;font-size:16px;letter-spacing:.25em;border-bottom:1.5px solid var(--ink)}
+.dk-key span{color:#4a3f31}

@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- =========================================================================
+     경성야록 부록 — 京城事件博覽會 (경성사건박람회) · 새 구성판
+     ▶ appendix.html : 화면 뼈대
+     -------------------------------------------------------------------------
+     기존 expo.* 파일은 그대로 두고, 새 이름으로 다시 구성한 판입니다.
+       appendix.html      ← 지금 이 파일. 칸만 잡아 두고 내용은 appendix.js 가 채움
+       appendix.css       ← 모양
+       appendix-data.js   ← 내용 (입장권 · 박람회 소개 · 1929 실물 자료 · 관 · 작품)
+       appendix.js        ← 동작 (입장권 고르기 · 자료실 놀이 · 지도 점등 · 족보 · 수첩)
+     새 사진은 assets/expo/ 폴더에만 넣었습니다. (기존 assets 파일은 손대지 않음)
+
+     페이지 구성 (위에서 아래로)
+       입구        1929년 실제 입장권 세 장 중 하나를 골라 개찰
+       第一部     1929년 가을, 경복궁 — 박람회가 무엇이었나 (숫자 넷 + 해설)
+       第二部     자료실 — 실물 자료를 '보고 · 만지고 · 찾는' 놀이 다섯 가지
+                   ① 리플렛 펼치기  ② 조감도 숨은 그림 찾기  ③ 옛 안내문 읽기
+                   ④ 남대문 불 켜기  ⑤ 지도 서랍 (+ 포스터 표어 · 활동사진)
+       第三部     여섯 관 — 자정의 회장안내도 (다녀간 관에 불이 켜짐)
+       第四部     사건 족보 (#tree)
+     화면 이동
+       appendix.html#map         처음 화면 (第一部~第三部가 한 장으로 이어짐)
+       appendix.html#p1 / #p2 / #p3   각 부로 바로 내려감
+       appendix.html#tree        사건 족보
+       appendix.html#hall/film   활동사진관 안
+     ========================================================================= -->
+<meta charset="UTF-8">
+<script src="yk-zoom.js"></script><!-- 화면 배율 120% -->
+<!-- 휴대폰에서 화면 끝까지 그리되, 위 · 아래 시스템 막대 아래로는 내용이 숨지 않게(expo.css :root 참고) -->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>경성야록 부록 · 경성사건박람회 京城事件博覽會</title>
+
+<!-- 글꼴: 메인과 똑같이 Noto Serif KR(제목 · 본문) + 나눔명조(작은 글 · 한자) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Serif+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+<!-- 모양 -->
+<link rel="stylesheet" href="appendix.css">
+</head>
+
+<body>
+
+<!-- =========================================================================
+     ① 입구 — 입장권 개찰
+     · 처음 들어오면 화면 전체를 덮습니다.
+     · '개찰하기'를 누르면: 펀치 구멍 → 오늘 날짜 도장 → 반권이 떨어짐 → 지면이 열림
+     · 오늘 이미 개찰했으면(수첩 기억) 입구 없이 바로 지면이 열립니다. (expo.js ② 참고)
+     ========================================================================= -->
+<section id="gate" class="gate" aria-label="박람회 입구">
+
+  <!-- 뒤에 깔리는 박람회 포스터 (assets/expo-poster.png) — 아주 어둡게 -->
+  <div class="gate-poster" id="gatePoster" aria-hidden="true"></div>
+
+  <div class="gate-inner">
+    <!-- 개장 시각 -->
+    <p class="gate-hour"><span class="hj" data-ko="자정 개장">子正 開場</span></p>
+    <!-- 질문 한 줄 -->
+    <h2 class="gate-q"><span class="hj" data-ko="어느 표로 들어가시겠습니까">어느 票로 드러가시겟슴닛가</span></h2>
+    <p class="gate-sub">1929년 조선박람회에서 실제로 쓰인 입장권입니다. 한 장을 골라 개찰하세요.</p>
+
+    <!-- 입장권 세 장: appendix.js ② 가 appendix-data.js 의 tickets 로 채움
+         · 누르면 그 표에 펀치 구멍 + 오늘 날짜 개찰 도장 → 나머지 두 장은 물러남 → 입장 -->
+    <div class="ticket-pick" id="ticketPick" role="group" aria-label="입장권 고르기"></div>
+
+    <!-- 연출 없이 들어가기 -->
+    <button type="button" class="gate-skip" id="skipBtn">표 없이 둘러보기</button>
+  </div>
+</section>
+
+
+<!-- =========================================================================
+     ② 지면 — 메인과 같은 종이 펼침면(.spread) 위에 박람회 안내지를 조판
+     ========================================================================= -->
+<div class="spread" id="spread">
+
+  <!-- ── 상단 띠: 메인 .topbar 와 같은 모양 ── -->
+  <header class="topbar">
+    <!-- 왼쪽 꼭지글 -->
+    <p class="kicker"><span class="hj" data-brand>京城野錄</span> · <b><span class="hj" data-ko="부록">附錄</span></b></p>
+    <!-- 오른쪽 메뉴: 본지로 / 보는 방식 두 가지 -->
+    <nav class="topnav" aria-label="박람회 메뉴">
+      <a href="#" id="toMain"><span class="hj" data-ko="본지로 돌아가기">本紙로 돌아가기</span></a>
+      <!-- 부 목차: #p1 · #p2 · #p3 는 한 장 안에서 그 부로 내려감 (appendix.js ⑨) -->
+      <a href="#p1" data-nav="p1"><span class="hj" data-ko="1부 박람회">第一部 博覽會</span></a>
+      <a href="#p2" data-nav="p2"><span class="hj" data-ko="2부 자료실">第二部 資料室</span></a>
+      <a href="#p3" data-nav="p3"><span class="hj" data-ko="3부 여섯 관">第三部 六館</span></a>
+      <a href="#tree" data-nav="tree"><span class="hj" data-ko="4부 사건 족보">第四部 事件 族譜</span></a>
+    </nav>
+  </header>
+
+  <!-- ── 제호: 왼쪽 도장 · 가운데 박람회 이름 · 오른쪽 회기 ── -->
+  <section class="masthead">
+
+    <!-- 왼쪽: 메인과 같은 붉은 네모 도장 + 세 줄 소개 -->
+    <div class="side side-l">
+      <span class="seal" aria-hidden="true">附<br>錄</span>
+      <p>지면에서 끝나지 않은 사건이<br>소설 · 노래 · 활동사진이 되어<br>백 년을 건너온 기록</p>
+    </div>
+
+    <!-- 가운데: 박람회 이름 -->
+    <div class="title">
+      <h1><span class="hj" data-ko="경성사건박람회">京城事件博覽會</span></h1>
+      <!-- 아래 작은 글자: 한자 낱자 간격을 넓게 (메인 제호 아래 '京 城 野 錄'과 같은 결) -->
+      <p class="hanja" aria-hidden="true">京城事件博覽會</p>
+    </div>
+
+    <!-- 오른쪽: 회기(會期) — 오늘 날짜와 개찰 상태를 expo.js 가 채움 -->
+    <div class="side side-r">
+      <p class="m-date" id="mDate"></p>
+      <p class="m-now"><span class="hj" data-ko="자정 개장 · 첫닭 폐장">子正 開場 · 鷄鳴 閉場</span></p>
+      <p class="m-sub" id="mTicket">입장권 개찰 전</p>
+    </div>
+  </section>
+
+  <!-- ── 머리말 한 줄 ── -->
+  <p class="tagline">
+    <span class="hj" data-ko="사건은 지면에서 끝나지 않았다.">事件은 紙面에서 끗나지 안엇다.</span>
+    <small>신문에서 시작된 사건이 다른 작품으로 이어진 기록을 여섯 관에 진열했습니다</small>
+  </p>
+
+  <!-- ── 관 목차: 메인 '지면 목차'와 같은 띠. 내용은 expo.js ④ 가 채움 ── -->
+  <nav class="halls" id="halls" aria-label="전시관 목차">
+    <!-- 왼쪽 검은 칸 '陳列 館' -->
+    <span class="halls-cap" aria-hidden="true"><i>陳列</i><i>館</i></span>
+    <!-- 여기에 6관 버튼이 들어감 -->
+  </nav>
+
+
+  <!-- =======================================================================
+       ③ 보기 1 — 회장안내도 (주소 #map)
+       ======================================================================= -->
+  <main class="view" id="view-map" aria-label="박람회 소개 · 자료실 · 회장안내도">
+
+    <!-- ===================================================================
+         第一部 — 1929년 가을, 경복궁
+         왼쪽: 숫자 넷 / 가운데: 해설 / 오른쪽: 채색 실사 사진
+         =================================================================== -->
+    <section class="part" id="p1" aria-labelledby="p1t">
+      <header class="part-head">
+        <span class="part-no"><span class="hj" data-ko="1부">第一部</span></span>
+        <h2 id="p1t"><span class="hj" data-ko="1929년 가을, 경복궁">一九二九年 가을, 景福宮</span></h2>
+        <p>이 부록이 빌려 온 틀 — 조선박람회는 무엇이었나</p>
+      </header>
+      <div class="p1-body">
+        <ul class="facts" id="facts"><!-- appendix.js ⑪ 이 채움 --></ul>
+        <div class="p1-text" id="introText"><!-- 해설 문단 --></div>
+        <figure class="p1-photo">
+          <img data-ex="ex-photo-site.jpg" alt="1929년 박람회장 일대 채색 실사 사진">
+          <figcaption>박람회장 일대 · 채색 실사 사진 · 1929 가을</figcaption>
+        </figure>
+      </div>
+      <p class="part-src" id="introSrc"></p>
+    </section>
+
+
+    <!-- ===================================================================
+         第二部 — 자료실: 1929년 실물 자료를 보고 · 만지고 · 찾는 곳
+         놀이를 하나 마칠 때마다 머리띠의 印 칸이 채워짐 (appendix.js ⑫)
+         =================================================================== -->
+    <section class="part" id="p2" aria-labelledby="p2t">
+      <header class="part-head">
+        <span class="part-no"><span class="hj" data-ko="2부">第二部</span></span>
+        <h2 id="p2t"><span class="hj" data-ko="자료실">資料室</span></h2>
+        <p>1929년 박람회의 실물 자료를 펼치고, 찾고, 읽고, 켜 보세요.</p>
+        <!-- 놀이 다섯 개 진행 칸 -->
+        <ol class="play-marks" id="playMarks" aria-label="자료실 놀이 진행"></ol>
+      </header>
+
+      <!-- ① 리플렛 펼치기 ─────────────────────────────── -->
+      <article class="play play-leaflet" id="play-leaflet">
+        <header class="label"><b><span class="hj" data-ko="자료 1">資料 一</span></b><i>리플렛</i><em>펼쳐 보기</em></header>
+        <div class="leaflet-stage">
+          <!-- 접힌 표지 → 펼친 앞면 → 뒷면 조감도, 세 장을 겹쳐 두고 단계에 따라 하나씩 보임 -->
+          <div class="leaflet" id="leaflet" data-step="0">
+            <img class="lf lf-cover"  data-ex="ex-leaflet-cover.jpg"  alt="관광 안내 리플렛 표지 — 봉황">
+            <img class="lf lf-spread" data-ex="ex-leaflet-spread.png" alt="리플렛을 펼친 앞면 — 경성 명소 사진과 안내문">
+            <img class="lf lf-back"   data-ex="ex-panorama.png"       alt="리플렛 뒷면 — 경성 조감도">
+          </div>
+          <div class="leaflet-side">
+            <h3><span class="hj" data-ko="관광 안내 리플렛">觀光 案內 리플렛</span></h3>
+            <p class="who">조선총독부 발행 · 요시다 하쓰사부로 그림 · 1929</p>
+            <p id="leafletText">붉은 해를 등진 봉황이 그려진 표지. 접혀 있는 안내서를 한 단씩 펼쳐 보세요.</p>
+            <button type="button" class="btn" id="leafletBtn">펼치기</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- ② 조감도 숨은 그림 찾기 ─────────────────────────── -->
+      <article class="play play-seek" id="play-seek">
+        <header class="label"><b><span class="hj" data-ko="자료 2">資料 二</span></b><i>조감도</i><em>숨은 그림 찾기</em></header>
+        <p class="play-lead">요시다 하쓰사부로가 그린 박람회 경성 조감도. 확대경을 대고 아래 다섯 가지를 찾아 누르세요.</p>
+        <!-- 조감도 + 확대경 + 찾은 자리 표시 (appendix.js ⑬) -->
+        <div class="seek-map" id="seekMap">
+          <img data-ex="ex-panorama.png" alt="박람회 경성 조감도">
+          <span class="lens" aria-hidden="true"></span>
+        </div>
+        <ul class="seek-list" id="seekList"><!-- 찾을 것 다섯 --></ul>
+        <p class="seek-note" id="seekNote" aria-live="polite"></p>
+      </article>
+
+      <!-- ③ 옛 안내문 읽기 ─────────────────────────────── -->
+      <article class="play play-notice" id="play-notice">
+        <header class="label"><b><span class="hj" data-ko="자료 3">資料 三</span></b><i>안내문</i><em>옛 글 읽기</em></header>
+        <div class="notice-stage">
+          <!-- 안내문 위 동그란 표시를 누르면 그 단락의 현대어 풀이가 오른쪽에 (appendix.js ⑭) -->
+          <div class="notice" id="notice">
+            <img data-ex="ex-notice.png" alt="조선박람회 안내문 — 국한문 혼용">
+          </div>
+          <aside class="notice-read" aria-live="polite">
+            <p class="nr-kicker"><span class="hj" data-ko="현대어 풀이">現代語 풀이</span> <span id="noticeCount"></span></p>
+            <h3 id="noticeTitle">동그란 표시를 눌러 보세요</h3>
+            <p id="noticeBody">1929년 박람회 관람객이 손에 쥐었던 안내문입니다. 한자와 한글을 섞어 세로로 썼습니다. 단락마다 오늘 말로 풀어 드립니다.</p>
+          </aside>
+        </div>
+      </article>
+
+      <!-- ④ 남대문 불 켜기 + 포스터 표어 ──────────────────── -->
+      <div class="play-pair">
+        <article class="play play-light" id="play-light">
+          <header class="label"><b><span class="hj" data-ko="자료 4">資料 四</span></b><i>사진</i><em>불 켜기</em></header>
+          <!-- 처음엔 어둠 속 남대문. 스위치를 올리면 전구 장식에 불이 들어옴 (appendix.js ⑮) -->
+          <div class="night-gate" id="nightGate">
+            <img data-ex="ex-illumination.jpg" alt="박람회 기간 전구로 장식한 남대문">
+          </div>
+          <div class="switch-row">
+            <button type="button" class="switch" id="lightSwitch" role="switch" aria-checked="false" aria-label="남대문 전구 켜기">
+              <span class="knob"></span>
+            </button>
+            <p id="lightText">박람회 기간, 남대문은 밤마다 전구로 둘러졌습니다. 스위치를 올려 보세요.</p>
+          </div>
+        </article>
+
+        <article class="play play-poster" id="play-poster">
+          <header class="label"><b><span class="hj" data-ko="자료 5">資料 五</span></b><i>포스터</i><em>표어 읽기</em></header>
+          <!-- 포스터 두 장. 띠 위 표시에 마우스를 올리면 표어 풀이 -->
+          <div class="posters" id="posters"></div>
+        </article>
+      </div>
+
+      <!-- ⑤ 지도 서랍 ─────────────────────────────────── -->
+      <article class="play play-drawer" id="play-drawer">
+        <header class="label"><b><span class="hj" data-ko="자료 6">資料 六</span></b><i>지도</i><em>서랍 열기</em></header>
+        <div class="drawer">
+          <!-- 서랍 손잡이 넷 (appendix.js ⑯) -->
+          <div class="drawer-tabs" id="drawerTabs" role="tablist" aria-label="지도 서랍"></div>
+          <div class="drawer-view">
+            <div class="drawer-map" id="drawerMap">
+              <img id="drawerImg" alt="">
+              <span class="lens" aria-hidden="true"></span>
+            </div>
+            <div class="drawer-cap">
+              <h3 id="drawerTitle"></h3>
+              <p class="who" id="drawerWho"></p>
+              <p id="drawerDesc"></p>
+              <p class="look" id="drawerLook"></p>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- 활동사진 한 칸: 영상은 바깥 사이트 링크 -->
+      <a class="film-strip" id="filmStrip" target="_blank" rel="noopener">
+        <span class="reel" aria-hidden="true"></span>
+        <span class="film-text">
+          <b><span class="hj" data-ko="활동사진 · 1929년 9월 14일 조선박람회">活動寫眞 · 一九二九年 九月 十四日 朝鮮博覽會</span></b>
+          <em>개막 이틀 뒤의 회장을 찍은 기록 영상 · TBS スパークル · 바깥 사이트에서 열림</em>
+        </span>
+        <u>영사 시작</u>
+      </a>
+    </section>
+
+
+    <!-- ===================================================================
+         第三部 — 여섯 관 (자정의 회장안내도)
+         =================================================================== -->
+    <section class="part part-tight" id="p3" aria-labelledby="p3t">
+      <header class="part-head">
+        <span class="part-no"><span class="hj" data-ko="3부">第三部</span></span>
+        <h2 id="p3t"><span class="hj" data-ko="여섯 관">六館</span></h2>
+        <p>지면의 사건이 소설 · 노래 · 활동사진으로 다시 태어난 기록. 관에 들어갔다 나오면 그 관에 불이 들어옵니다.</p>
+      </header>
+    </section>
+
+    <div class="grounds">
+
+      <!-- 왼쪽 큰 칸: 배치도 -->
+      <article class="box map-box">
+        <!-- 메인 기사 칸 머리띠와 같은 모양: 검은 꼬리표 · 번호 · 오른쪽 날짜 -->
+        <header class="label"><b><span class="hj" data-ko="회장안내도">會場案內圖</span></b><i>01</i><em><span class="hj" data-ko="자정의 경복궁">子正의 景福宮</span></em></header>
+
+        <!-- 지도 + 명패 (명패는 expo.js ④ 가 x,y 위치에 얹음) -->
+        <div class="map" id="map">
+          <!-- 실제 배치도 사진. 없으면 아래 코드 그림이 대신 보임 -->
+          <img class="map-img" id="mapImg" alt="1929년 조선박람회 회장 배치도">
+          <!-- 자정의 밤 막: 지도를 밤처럼 가라앉힘. 여섯 관에 다 불이 들어오면 걷힘 (expo.css '자정의 회장') -->
+          <div class="map-night" aria-hidden="true"></div>
+
+          <!-- 사진이 없을 때 쓰는 대체 배치도: 담장 · 직영관(황토) · 특설관(초록) · 연못(파랑)만 단순하게 -->
+          <svg class="map-fallback" viewBox="0 0 1000 690" aria-hidden="true">
+            <!-- 바탕 -->
+            <rect width="1000" height="690" fill="#efe3c6"/>
+            <!-- 회장 담장 (점선) -->
+            <path d="M300 180 L780 160 L780 240 L960 410 L930 590 L560 600 L130 610 L120 220 Z" fill="none" stroke="#3a3128" stroke-width="2" stroke-dasharray="6 5"/>
+            <!-- 특설관 · 정원 (초록) -->
+            <g fill="#a9bb83" opacity=".8"><rect x="560" y="370" width="210" height="160" rx="60"/><rect x="700" y="190" width="70" height="110"/></g>
+            <!-- 직영관 (황토) -->
+            <g fill="#e9a650">
+              <rect x="400" y="190" width="90" height="40"/><rect x="260" y="350" width="140" height="110" fill="none" stroke="#e9a650" stroke-width="8"/>
+              <rect x="420" y="400" width="30" height="110"/><rect x="460" y="400" width="30" height="110"/>
+              <rect x="380" y="510" width="60" height="70"/><rect x="460" y="510" width="60" height="70"/><rect x="590" y="580" width="20" height="90"/>
+            </g>
+            <!-- 경회루 연못 · 향원정 연못 (파랑) -->
+            <rect x="400" y="240" width="90" height="130" fill="#6f9aa6" opacity=".8"/>
+            <circle cx="670" cy="440" r="45" fill="#6f9aa6" opacity=".85"/>
+          </svg>
+        </div>
+
+        <!-- 범례: 1929 배치도의 인쇄색 그대로 (직영관 황토 · 특설관 초록 · 연못 파랑) + 우리 관 명패 -->
+        <ul class="legend" aria-label="배치도 범례">
+          <li><i class="sw ochre"></i><span class="hj" data-ko="직영관">直營館</span></li>
+          <li><i class="sw moss"></i><span class="hj" data-ko="특설관">特設館</span></li>
+          <li><i class="sw pond"></i><span class="hj" data-ko="연못">蓮池</span></li>
+          <li><i class="sw plate"></i>아직 불 꺼진 관</li>
+          <li><i class="sw lit"></i>다녀가서 불이 켜진 관</li>
+          <li><i class="sw glow"></i>2026의 빛이 새어 나오는 관</li>
+        </ul>
+
+        <!-- 지도 아래 설명줄 -->
+        <p class="pcap">
+          <span class="hj" data-ko="조선박람회 회장 배치도 · 1929">朝鮮博覽會 會場配置圖 · 一九二九</span>
+          <!-- 점등 현황: 전구 여섯 개 + 안내 한 줄 (expo.js ⑧ drawLitCount) -->
+          <em class="lit-count" id="litCount" aria-live="polite"></em>
+        </p>
+      </article>
+
+      <!-- 오른쪽 좁은 칸: 관람 안내 -->
+      <aside class="box guide" aria-label="관람 안내">
+        <header class="label"><b><span class="hj" data-ko="관람안내">觀覽案內</span></b><i>02</i></header>
+
+        <!-- 1929년 실제 회기 · 회장 · 규모 (expo-data.js expo1929) -->
+        <section class="period">
+          <h2><span class="hj" data-ko="1929 조선박람회">一九二九 朝鮮博覽會</span></h2>
+          <dl id="periodList"><!-- expo.js ⑤ 가 채움 --></dl>
+        </section>
+
+        <!-- 당시 입장료 표 (expo-data.js fee1929) — 개인 세 줄 + 단체 세 줄 -->
+        <section class="fee">
+          <h2><span class="hj" data-ko="당시 입장료">當時 入場料</span></h2>
+          <dl id="feeList"><!-- expo.js ⑤ 가 채움 --></dl>
+          <p class="note">조선박람회 안내문 「入場料」 기준</p>
+        </section>
+
+        <!-- 관람 방법: 순서가 있는 내용이라 번호를 씀. li 안을 span 하나로 감싸야 번호 옆 한 칸에 글이 모임 -->
+        <section class="howto">
+          <h2><span class="hj" data-ko="관람법">觀覽法</span></h2>
+          <ol>
+            <li><span>관 이름을 눌러 들어가면 수첩에 도장이 찍힙니다.</span></li>
+            <li><span>진열품 아래 표찰에서 그 작품이 태어난 지면으로 갈 수 있습니다.</span></li>
+            <li><span>여섯 관을 모두 돌면 <b><span class="hj" data-ko="경성야록 상점">京城野錄 商店</span></b> 할인권이 나옵니다.</span></li>
+          </ol>
+        </section>
+
+        <!-- 포스터 액자 (assets/expo-poster.png) -->
+        <figure class="poster" id="posterFig">
+          <img id="posterImg" alt="1929년 조선박람회 포스터">
+          <figcaption><span class="hj" data-ko="박람회 포스터 · 1929">博覽會 포스터 · 一九二九</span></figcaption>
+        </figure>
+      </aside>
+    </div>
+
+    <!-- 관별 진열 수 색인: 메인 '각면 기록' 색인과 같은 모양 (expo.js ④) -->
+    <section class="index" aria-label="관별 진열 색인">
+      <header class="index-head">
+        <b><span class="hj" data-ko="각 관 진열">各館 陳列</span></b>
+        <span>관마다 놓인 작품 · 오래된 것부터</span>
+      </header>
+      <div class="index-cols" id="indexCols"></div>
+    </section>
+  </main>
+
+
+  <!-- =======================================================================
+       ④ 보기 2 — 사건 족보 (주소 #tree)
+       맨 위가 그날의 사건, 아래로 내려갈수록 뒤에 태어난 작품
+       ======================================================================= -->
+  <main class="view" id="view-tree" aria-label="사건 족보" hidden>
+    <header class="view-head">
+      <h2><span class="hj" data-ko="사건 족보">事件 族譜</span></h2>
+      <p>맨 위가 그날의 사건이고, 아래로 갈수록 뒤에 태어난 작품입니다. 작품 이름을 누르면 그 작품이 놓인 관으로 들어갑니다.</p>
+    </header>
+    <div class="trees" id="trees"><!-- expo.js ⑦ 이 채움 --></div>
+  </main>
+
+
+  <!-- =======================================================================
+       ⑤ 보기 3 — 관 내부 (주소 #hall/관id)
+       ======================================================================= -->
+  <main class="view" id="view-hall" aria-label="전시관 내부" hidden>
+
+    <!-- 관 머리: 왼쪽 세로 관 이름 · 가운데 관 사진 · 오른쪽 설명 -->
+    <header class="hall-head" id="hallHead">
+      <h2 class="hall-name" id="hallName"><!-- 세로쓰기 관 이름 --></h2>
+      <figure class="hall-photo" id="hallPhoto">
+        <img id="hallImg" alt="">
+        <!-- 사진이 없을 때 보이는 빈 틀 글자 -->
+        <span class="hall-empty" id="hallEmpty"></span>
+      </figure>
+      <div class="hall-info">
+        <p class="hall-kind" id="hallKind"></p>
+        <p class="hall-count" id="hallCount"></p>
+        <a href="#map" class="back"><span class="hj" data-ko="회장안내도로">會場案內圖로</span></a>
+      </div>
+    </header>
+
+    <!-- 진열장: 작품 카드들 (expo.js ⑥) -->
+    <div class="shelf" id="shelf"></div>
+
+    <!-- 다음 관으로: 수첩을 채우기 쉽게 -->
+    <nav class="next-hall" id="nextHall" aria-label="다른 관"></nav>
+  </main>
+
+
+  <!-- ── 아래 띠: 메인 .foot 와 같은 모양 ── -->
+  <footer class="foot">
+    <h3><span class="hj" data-ko="시즌 1 · 사건은 다른 작품으로 이어진다">시즌 1 · 事件은 다른 作品으로 이어진다</span></h3>
+    <p>
+      회장 배치도 · 포스터: 1929년 조선박람회 인쇄물 (소장처 표기 자리)<br>
+      작품 정보는 리서치 자료집과 공개 자료 기준. 1990년 이후 작품은 포스터와 장면 없이 제목 · 연도 · 찾아보기 링크만 둡니다.
+    </p>
+  </footer>
+</div>
+
+
+<!-- =========================================================================
+     ⑥ 관람 도장 수첩 — 화면 오른쪽 아래에 늘 떠 있음
+     ========================================================================= -->
+<!-- 수첩 겉표지 버튼 -->
+<button type="button" class="pass-btn" id="passBtn" aria-expanded="false" aria-controls="passport">
+  <span class="hj" data-ko="관람 수첩">觀覽 手帖</span>
+  <b id="passCount">0/6</b>
+</button>
+
+<!-- 펼친 수첩 -->
+<aside class="passport" id="passport" aria-label="관람 도장 수첩" hidden>
+  <h2><span class="hj" data-ko="관람 인장 수첩">觀覽 印章 手帖</span></h2>
+  <p class="p-lead">관에 들어서면 도장이 찍힙니다.</p>
+  <!-- 입구에서 고른 1929 입장권 (appendix.js drawTicketState) -->
+  <p class="p-ticket" id="passTicket"></p>
+  <!-- 도장 칸 6개 (expo.js ⑧) -->
+  <div class="slots" id="slots"></div>
+  <!-- 할인권: 6관을 다 돌면 나타남 -->
+  <div class="coupon" id="coupon" hidden>
+    <b><span class="hj" data-ko="할인권">割引券</span></b>
+    <span id="couponShop"></span>
+    <code id="couponCode"></code>
+    <small id="couponNote"></small>
+  </div>
+  <!-- 처음부터 다시 돌기 (시연 · 발표 때 쓰기 좋음) -->
+  <button type="button" class="p-reset" id="passReset">처음부터 다시 (도장 · 자료실 · 입장권 모두 비우기)</button>
+</aside>
+
+
+<!-- 순서 중요: 데이터 → 동작 -->
+<script src="appendix-data.js"></script>
+<script src="appendix.js"></script>
+</body>
+</html>

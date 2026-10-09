@@ -1,0 +1,115 @@
+/* 상점 디벨롭 — 사진 머리 · 장 표시 · 진열장 접기 · 특별 진열 띠 */
+.sp-hero{position:relative;display:grid;grid-template-columns:1fr;min-height:440px;margin-top:12px;padding:0;text-align:left;border-top:3px double var(--rule);overflow:hidden;background:#100c08}
+.spx-img{position:absolute;inset:0}
+.spx-img img{width:100%;height:100%;object-fit:cover;object-position:50% 55%;filter:sepia(.35) contrast(1.05) brightness(.62)}
+.spx-img::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(12,9,6,.92) 0%,rgba(12,9,6,.7) 42%,rgba(12,9,6,.05) 80%)}
+.spx-t{position:relative;z-index:1;align-self:center;max-width:560px;padding:56px 0 56px clamp(28px,5vw,72px)}
+.sp-hero .sp-k{color:rgba(232,220,192,.65);letter-spacing:.28em}
+.sp-hero h1{margin-top:16px;color:#efe4cb;font-size:52px;letter-spacing:.24em;padding-left:0}
+.sp-hero .sp-s{max-width:none;margin:18px 0 0;color:rgba(232,220,192,.85);font-size:15.5px}
+.sp-hero .hj.gloss{color:inherit!important}
+.spx-sc{position:absolute;right:-30vw}
+.sp-hero::after{content:"재현 그림";position:absolute;right:16px;bottom:12px;z-index:1;font-family:var(--myeongjo);font-size:11px;letter-spacing:.2em;color:rgba(232,220,192,.5)}
+.spx-jump{position:sticky;top:0;z-index:20;margin:0;display:flex;flex-wrap:wrap;padding:12px 0;background:linear-gradient(180deg,var(--paper) 80%,rgba(231,219,194,0));border-bottom:1px solid var(--rule);justify-content:center}
+.spx-jump a{position:relative;padding:4px 10px;font-size:13.5px!important;color:#4a3f31;transition:color .2s}
+.spx-jump a.on{color:var(--ink);font-weight:800}
+.spx-jump a.on::after{content:"";position:absolute;left:10px;right:10px;bottom:-12px;height:3px;background:var(--ink)}
+.spx-jump a i{font-style:normal;margin-right:5px;font-family:var(--serif);font-weight:900;color:var(--seal)}
+/* 진열장 접기 */
+.sp-grid.folded .vt.more{display:none}
+.spx-more{display:block;margin:26px auto 0;padding:13px 30px 12px;background:var(--ink);color:var(--paper);font-family:var(--serif);font-weight:700;font-size:15px;letter-spacing:.2em;cursor:pointer;border:0}
+.spx-more:hover{background:#3a3128}
+/* 특별 진열 띠 */
+.spx-div{position:relative;margin:70px 0 10px;border-top:3px double var(--rule);border-bottom:1px solid var(--rule);padding:14px 0}
+.spx-div img{display:block;width:100%;height:auto;filter:sepia(.25) contrast(1.05);mix-blend-mode:multiply}
+.spx-div>span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);padding:8px 22px 7px;background:var(--ink);color:var(--paper);font-family:var(--serif);font-weight:900;font-size:16px;letter-spacing:.4em;white-space:nowrap}
+.spx-div .hj.gloss{color:inherit!important}
+/* 글씨 대비 */
+.sx-head p,.sp-cnt{color:#2b2219!important;font-size:14.5px!important}
+.vt-tag .t{color:#2b2219}
+
+/* ── v2 ── */
+/* 진열장: 접어 둔 12점은 4×3 가지런한 진열 상자 · 펼친 뒤엔 원래 흐름(높낮이 있는 진열) */
+.sp-grid.folded{columns:auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:30px 28px}
+.sp-grid.folded .vt{margin:0}
+.sp-grid.folded .vt-glass{height:300px;display:flex;align-items:center;justify-content:center;background:#efe6d2}
+.sp-grid.folded .vt-glass>img{width:auto;max-width:100%;max-height:100%;object-fit:contain}
+.sp-grid.folded .vt-tag .t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:980px){.sp-grid.folded{grid-template-columns:repeat(2,minmax(0,1fr))}.sp-grid.folded .vt-glass{height:230px}}
+
+/* 특별 진열 띠: 삽화 톤을 지면(세피아 먹)에 맞춤 */
+.spx-div{background:#e2d6ba}
+.spx-div img{filter:grayscale(1) sepia(.32) contrast(1.12) brightness(1.02);mix-blend-mode:normal;opacity:1}
+.spx-div::after{content:"재현 그림";position:absolute;right:6px;bottom:-20px;font-family:var(--myeongjo);font-size:10.5px;letter-spacing:.16em;color:#4a3f31}
+
+/* 욕망의 다섯 서랍 — 약방 서랍장: 먹빛 나무 · 놋쇠 이름표 틀 · 손잡이 · 열면 서랍이 앞으로 */
+.dr-cab{max-width:960px;padding:30px 30px 26px;background:
+  linear-gradient(180deg,rgba(255,255,255,.04),rgba(0,0,0,.18)),
+  repeating-linear-gradient(90deg,#2a1d13 0 3px,#2f2116 3px 9px,#271a11 9px 12px),#2a1d13;
+  box-shadow:inset 0 0 0 2px #120c07,inset 0 0 0 6px #3c2a1b,inset 0 0 0 7px #160f09,0 50px 60px -36px rgba(0,0,0,.85);border-radius:0}
+.dr-cab::before{display:none}
+.dr-cab::after{content:"";position:absolute;left:-14px;right:-14px;top:-12px;height:14px;background:linear-gradient(180deg,#3a281a,#20160e);box-shadow:0 2px 0 #0e0905}
+.dr-top{padding:0 0 22px}
+.dr-top span{font-family:var(--myeongjo);font-weight:800;font-size:11.5px;letter-spacing:.6em;color:#b9a073}
+.dr-row{gap:14px}
+.dr-front{height:178px;justify-content:flex-start;gap:0;padding:22px 0 0;background:linear-gradient(180deg,#3b2a1c,#2f2117 60%,#2a1d14)!important;
+  box-shadow:inset 0 1px 0 rgba(255,225,170,.12),inset 0 -3px 0 rgba(0,0,0,.45),inset 0 0 0 1px #140d08,0 3px 4px rgba(0,0,0,.5)!important;transition:transform .45s cubic-bezier(.3,1.3,.5,1),box-shadow .45s}
+.dr-front b{display:flex;align-items:center;justify-content:center;width:70%;height:62px;margin:0 auto;padding:0;
+  background:linear-gradient(180deg,#f1e7cf,#e2d4b2);color:#1e1913!important;font-family:var(--serif);font-weight:900;font-size:24px!important;letter-spacing:.12em;
+  box-shadow:0 0 0 3px #a88a52,0 0 0 4px #5c4724,inset 0 0 8px rgba(110,80,40,.25),0 2px 3px 4px rgba(0,0,0,.35)}
+.dr-front b .hj.gloss{font-size:inherit!important}
+.dr-ring{display:block;width:44px!important;height:22px!important;margin:24px auto 0;border:3px solid #b39762!important;border-top:0!important;border-radius:0 0 26px 26px!important;
+  box-shadow:0 3px 3px rgba(0,0,0,.6)!important;position:relative}
+.dr-ring::before,.dr-ring::after{content:"";position:absolute;top:-6px;width:10px;height:10px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ead7a2,#9c7f48 60%,#5c4824)}
+.dr-ring::before{left:-7px}.dr-ring::after{right:-7px}
+.dr-front small{position:absolute;bottom:12px;left:0;right:0;text-align:center;font-family:var(--myeongjo);font-size:11px;letter-spacing:.24em;color:#a8916a}
+.dr-front:hover{transform:translateY(-2px)}
+.dr-front:hover .dr-ring{transform:rotate(-8deg);transform-origin:50% 0}
+.dr-front.out{transform:translateY(14px) scale(1.05)!important;box-shadow:inset 0 1px 0 rgba(255,225,170,.18),inset 0 0 0 1px #140d08,0 26px 26px -10px rgba(0,0,0,.85)!important;z-index:2}
+.dr-front.out b{background:linear-gradient(180deg,#fbf3de,#ecdfbf)}
+.dr-lock{height:76px!important;margin-top:14px!important;padding:0 26px!important;justify-content:center!important;gap:20px!important;
+  background:linear-gradient(180deg,#22170f,#1a120b)!important;box-shadow:inset 0 0 0 1px #0d0805,inset 0 1px 0 rgba(255,225,170,.08)!important}
+.dr-lock b{width:auto!important;height:auto!important;background:none!important;box-shadow:none!important;color:#c9b183!important;font-size:16px!important;letter-spacing:.5em!important}
+.dr-lock small{position:static!important;color:#8f7a55!important}
+.dr-key{width:22px!important;height:30px!important;border-radius:11px 11px 4px 4px!important;background:radial-gradient(circle at 50% 36%,#1a120b 0 4px,transparent 4.5px),linear-gradient(180deg,#d8bf86,#9c7f48)!important;box-shadow:0 1px 2px rgba(0,0,0,.6)}
+.dr-key::after{left:9px!important;top:14px!important;width:4px!important;height:9px!important;background:#1a120b!important}
+.dr-fill{background:#b39762!important}
+.dr-lock.open{background:linear-gradient(180deg,#3a2a1c,#2a1d14)!important}
+.dr-say{margin-top:6px}
+@media (max-width:760px){.dr-front{height:140px}.dr-front b{font-size:19px!important;height:50px}}
+
+/* v2 · 진열장은 펼쳐도 접어도 같은 바둑판 — 유리칸 높이 · 이름표 높이 고정 */
+.sp-grid,.sp-grid.folded{columns:auto!important;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:34px 28px;align-items:start}
+.sp-grid .vt{margin:0}
+.sp-grid .vt-glass{height:300px;display:flex;align-items:center;justify-content:center;background:#efe6d2}
+.sp-grid .vt-glass>img{width:auto;height:auto;max-width:100%;max-height:100%;object-fit:contain}
+.sp-grid .vt-tag{min-height:52px;align-content:start}
+.sp-grid .vt-tag .t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:980px){.sp-grid,.sp-grid.folded{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 16px}.sp-grid .vt-glass{height:230px}}
+
+/* v2 · 구분 그림 — 종이색 그대로 (흰 바탕 없이 지면에 먹만 찍힌 듯) */
+.spx-div{background:none!important;padding:18px 0 16px;margin:84px 0 8px;border-top:3px double var(--rule);border-bottom:1px solid var(--rule)}
+.spx-div img{filter:none!important;mix-blend-mode:multiply!important;opacity:.92!important;width:100%;height:auto;display:block}
+.spx-div>span{box-shadow:0 0 0 4px var(--paper),0 0 0 5px var(--ink);font-size:15px;padding:8px 24px 7px}
+.spx-div.dark>span{background:var(--paper);color:var(--ink);box-shadow:0 0 0 4px var(--ink),0 0 0 5px var(--paper)}
+.spx-div::after{bottom:-22px}
+.spx-div.lft>span{left:27%}
+
+/* v3 · 진열장: 빈칸 없이 — 마지막 줄은 가운데로 모음 (칸 크기는 모두 같음) */
+.sp-grid,.sp-grid.folded{display:flex!important;flex-wrap:wrap;justify-content:center;gap:34px 28px;columns:auto!important}
+.sp-grid .vt{flex:0 0 calc((100% - 3 * 28px) / 4);max-width:calc((100% - 3 * 28px) / 4)}
+.sp-grid .vt[hidden],.sp-grid.folded .vt.more{display:none}
+.vt-note .vt-src{display:block;margin-top:8px;font-style:normal;font-size:11.5px;letter-spacing:.04em;color:#a99a78}
+@media (max-width:980px){.sp-grid,.sp-grid.folded{gap:24px 16px}.sp-grid .vt{flex-basis:calc((100% - 16px) / 2);max-width:calc((100% - 16px) / 2)}}
+
+/* v4 · 진열장: 줄마다 꽉 차게 — 가로로 긴 광고 몇 점이 두 칸을 차지해 남는 칸을 메움 */
+.sp-grid,.sp-grid.folded{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-flow:row dense;gap:34px 28px;justify-content:stretch}
+.sp-grid .vt{flex:none;max-width:none}
+.sp-grid .vt.wide{grid-column:span 2}
+.sp-grid .vt.wide .vt-glass>img{max-width:96%}
+@media (max-width:980px){.sp-grid,.sp-grid.folded{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 16px}}
+
+/* v4 · 지면 사진 액자도 종이색으로 (흰 바탕 제거) */
+.od-page,.bn-ad,.ud-row.revive .ud-page{background:#e7dbc2!important}
+.od-tabs img{filter:none!important;opacity:.7}
+.od-tabs button.on img,.od-tabs button:hover img{opacity:1}

@@ -1,0 +1,34 @@
+경성야록 · 마리아 판14 — 미드저니로 뽑을 그림 6장
+==========================================================
+뽑은 그림은 파일 이름을 아래 굵은 이름 그대로 바꿔서 보내 주세요.
+
+[톤 맞추는 꿀팁]
+히사코 사진(p_hisako.jpg)을 미드저니에 올리고, 프롬프트 맨 뒤에
+--sref (그 사진 주소) 를 붙이면 수첩 사진이 전부 히사코 사진이랑 같은 톤으로 나와요.
+
+──────── 기자 수첩 인물 사진 (히사코 사진처럼, 얼굴은 타서 안 보이게) ────────
+
+p_maria.jpg  — 마리아
+damaged 1930s full-length studio portrait photograph of a young Korean housemaid standing, plain white jeogori and long dark skirt with a white apron, hands folded, face completely obscured by a dark burn stain, torn and peeling photo edges, water damage, faded sepia, film grain, eerie, archival --ar 2:3 --style raw --v 6.1
+
+p_yama.jpg  — 야마구치 (투서 용의자)
+damaged 1930s full-length studio portrait photograph of a thin man standing in a shabby worn jacket and flat cap, hands in pockets, face completely obscured by a dark burn stain, torn and peeling photo edges, water damage, faded sepia, film grain, eerie, archival --ar 2:3 --style raw --v 6.1
+
+p_inoue.jpg  — 이노우에 (안경 쓴 사내)
+damaged 1930s full-length studio portrait photograph of a man around thirty standing in a dark three-piece suit, close-cropped hair, round lloyd glasses barely visible where the face is burned away, torn and peeling photo edges, water damage, faded sepia, film grain, eerie, archival --ar 2:3 --style raw --v 6.1
+
+p_last.jpg  — 犯人 (마지막 장, 비어 있는 사람)
+damaged 1930s full-length studio portrait photograph where the standing figure has been completely burned out, only a dark man-shaped hole in the emulsion against a painted studio backdrop, torn and peeling photo edges, water damage, faded sepia, film grain, unsettling, archival --ar 2:3 --style raw --v 6.1
+
+※ 마사미 · 히사코 · 길의 사내 사진은 이미 같은 톤이라 그대로 둬요.
+
+──────── 第一報 (동아일보 첫 보도) 배경 ────────
+
+first_press.jpg  — 신문 인쇄소의 밤
+1930s newspaper printing room at night, old rotary printing press, stacks of freshly printed newspapers, a single hanging lamp, ink stains on the floor, no people, sepia noir, film grain, cinematic, still --ar 16:9 --style raw --v 6.1
+
+
+──────── 기자 수첩 표지 (선택 · 지금 것 그대로 써도 됨) ────────
+
+notebook.jpg  — 글자 없는 수첩으로 바꾸고 싶을 때
+1930s worn black cloth reporter's pocket notebook with no text on the cover, elastic band, pencil beside it, top-down on a dark wood desk, single dim lamp light, sepia monochrome, film grain --ar 4:5 --style raw --v 6.1

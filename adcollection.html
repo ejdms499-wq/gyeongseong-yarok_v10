@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- =========================================================================
+     경성야록 · 廣告帖 「광고 모아보기」 (adcollection.html)
+     동아일보 아카이브 '광고 모아보기'처럼: 분류 · 정렬 · 격자 · 크게 보기
+     · 광고 목록은 adcollection-data.js (광고 더 넣는 법도 거기 적어 둠)
+     · 크게 보면 '그 광고의 뒤' 이야기 + 그 광고가 실린 그날 지면
+     · '오려 두기' → 가위가 오림선을 돌고, '오려 둔 것' 칸에 모임 (메인 광고 띠에서 오린 것도 같이)
+     ========================================================================= -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>廣告帖 · 경성야록 광고 모아보기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Serif+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#e7dbc2;--paper-2:#d8c8a6;--ink:#1e1913;--fade:#6e6250;--rule:#3a3128;--seal:#8a2a21;--night:#15130f;
+  --serif:"Noto Serif KR","Nanum Myeongjo","Batang",serif;--myeongjo:"Nanum Myeongjo","Noto Serif KR",serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{background:#2a251e;font-family:var(--serif);color:var(--ink);word-break:keep-all;-webkit-font-smoothing:antialiased}
+.sheet{max-width:1240px;margin:0 auto;min-height:100vh;background:var(--paper);
+  background-image:radial-gradient(ellipse at 50% 0%,rgba(255,250,235,.35),transparent 60%),radial-gradient(ellipse at 50% 100%,rgba(90,70,40,.18),transparent 70%);
+  box-shadow:0 0 60px rgba(0,0,0,.5);padding:28px clamp(16px,4vw,48px) 80px}
+a{color:inherit}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+
+/* 머리 */
+.top{display:flex;justify-content:space-between;align-items:center;font-size:12px;letter-spacing:.14em;color:var(--fade);border-bottom:1px solid var(--rule);padding-bottom:10px}
+.top a{text-decoration:none}.top a:hover{color:var(--ink)}
+.head{text-align:center;padding:34px 0 26px;border-bottom:3px double var(--rule)}
+.head small{display:block;font-size:12px;letter-spacing:.5em;color:var(--fade)}
+.head h1{font-family:var(--myeongjo);font-weight:800;font-size:clamp(34px,6vw,58px);letter-spacing:.3em;margin:10px 0 6px;padding-left:.3em}
+.head p{font-size:14px;letter-spacing:.1em;color:#3d342a}
+.head p b{color:var(--seal);font-weight:700}
+
+/* 분류 · 정렬 */
+.bar{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between;padding:18px 0 14px;border-bottom:1px solid var(--rule)}
+.tabs{display:flex;flex-wrap:wrap;gap:6px}
+.tab{padding:7px 13px;font-size:13.5px;letter-spacing:.08em;border:1px solid rgba(58,49,40,.35);transition:background .3s,color .3s}
+.tab sup{font-size:10px;color:var(--fade);margin-left:3px}
+.tab .nt{font-size:10px;color:var(--seal);margin-left:4px;letter-spacing:.1em}
+.tab:hover{background:rgba(58,49,40,.08)}
+.tab[aria-selected="true"]{background:var(--night);color:#e9dfc9;border-color:var(--night)}
+.tab[aria-selected="true"] sup,.tab[aria-selected="true"] .nt{color:#bfae8e}
+.sort{display:flex;gap:4px;font-size:12.5px;letter-spacing:.1em;color:var(--fade)}
+.sort button{padding:5px 8px}.sort button[aria-pressed="true"]{color:var(--ink);text-decoration:underline;text-underline-offset:4px}
+.count{font-size:12px;letter-spacing:.15em;color:var(--fade);padding:14px 0 6px}
+
+/* 격자 */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:22px 18px;padding-top:8px}
+.card{display:flex;flex-direction:column;text-align:left;animation:in .6s ease both}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.card .ph{position:relative;height:178px;background:var(--paper-2);box-shadow:inset 0 0 0 1px var(--rule),inset 0 0 0 4px var(--paper-2),inset 0 0 0 5px rgba(58,49,40,.5);
+  display:flex;align-items:center;justify-content:center;padding:14px;overflow:hidden;transition:transform .4s ease,box-shadow .4s ease}
+.card .ph img{max-width:100%;max-height:100%;object-fit:contain;mix-blend-mode:multiply;filter:contrast(1.04);transition:transform .6s ease}
+.card .ph::after{content:"";position:absolute;inset:8px;border:1px dashed rgba(58,49,40,.18);pointer-events:none}
+.card:hover .ph,.card:focus-visible .ph{transform:translateY(-3px);box-shadow:inset 0 0 0 1px var(--rule),inset 0 0 0 4px var(--paper-2),inset 0 0 0 5px rgba(58,49,40,.5),0 10px 18px rgba(30,20,10,.18)}
+.card:hover .ph img{transform:scale(1.03)}
+.card:focus-visible{outline:2px solid var(--seal);outline-offset:3px}
+.card .mk{position:absolute;top:10px;right:10px;display:flex;gap:4px}
+.card .mk i{font-style:normal;font-size:10px;letter-spacing:.1em;padding:2px 6px;background:var(--night);color:#e9dfc9}
+.card .mk i.tb{background:var(--seal)}
+.card .mk i.cut{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+.card .meta{padding:10px 2px 0}
+.card .dt{font-size:11.5px;letter-spacing:.08em;color:var(--fade)}
+.card .tt{font-family:var(--myeongjo);font-weight:800;font-size:16px;letter-spacing:.04em;margin:4px 0 2px;line-height:1.35}
+.card .wh{font-size:12.5px;color:#4a4035}
+.card .af{display:block;margin-top:6px;font-size:11px;letter-spacing:.14em;color:var(--seal)}
+.empty{grid-column:1/-1;text-align:center;padding:60px 0;color:var(--fade);letter-spacing:.15em;font-size:14px;line-height:2}
+
+.foot{margin-top:56px;border-top:1px solid var(--rule);padding-top:14px;font-size:12px;letter-spacing:.1em;color:var(--fade);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+
+/* 크게 보기 */
+.lb{position:fixed;inset:0;z-index:50;background:rgba(10,8,6,.88);display:none;align-items:center;justify-content:center;padding:20px}
+.lb.on{display:flex;animation:fade .35s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.lb-box{position:relative;width:min(1120px,100%);max-height:calc(100vh - 40px);overflow:auto;background:var(--paper);display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,1fr)}
+.lb-pic{position:relative;background:var(--paper-2);display:flex;align-items:center;justify-content:center;padding:28px;min-height:420px}
+.lb-pic .frame{position:relative;display:inline-block;max-width:100%}
+.lb-pic img{display:block;height:auto;max-width:100%;max-height:calc(100vh - 140px);object-fit:contain;mix-blend-mode:multiply}
+.lb-pic .snip{position:absolute;inset:-8px;border:1px dashed rgba(58,49,40,.35);pointer-events:none}
+.lb-pic .snip::after{content:"";position:absolute;width:18px;height:18px;left:-9px;top:-9px;opacity:0;
+  background:no-repeat center/contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232a1f17' stroke-width='1.8' stroke-linecap='round'%3E%3Ccircle cx='6' cy='6' r='3'/%3E%3Ccircle cx='6' cy='18' r='3'/%3E%3Cpath d='M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12'/%3E%3C/svg%3E")}
+.lb-pic.cutting .snip{border-color:rgba(58,49,40,.7)}
+.lb-pic.cutting .snip::after{animation:sc 1.2s cubic-bezier(.5,0,.5,1) forwards}
+.lb-pic.lifted .frame{animation:lift 1s ease}
+@keyframes sc{0%{opacity:0;left:-9px;top:-9px;transform:rotate(0)}6%{opacity:1}30%{left:calc(100% - 9px);top:-9px;transform:rotate(0)}31%{transform:rotate(90deg)}50%{left:calc(100% - 9px);top:calc(100% - 9px);transform:rotate(90deg)}51%{transform:rotate(180deg)}80%{left:-9px;top:calc(100% - 9px);transform:rotate(180deg)}81%{transform:rotate(270deg)}96%{opacity:1}100%{opacity:0;left:-9px;top:-9px;transform:rotate(270deg)}}
+@keyframes lift{0%{transform:none}40%{transform:translateY(-8px) rotate(-1.5deg);filter:drop-shadow(0 14px 16px rgba(20,14,8,.35))}100%{transform:none}}
+.lb-pic .which{position:absolute;left:14px;bottom:10px;font-size:11px;letter-spacing:.15em;color:var(--fade)}
+.lb-info{padding:30px 28px 26px;display:flex;flex-direction:column;gap:14px;border-left:1px solid var(--rule)}
+.lb-info .cat{font-size:11px;letter-spacing:.3em;color:var(--fade)}
+.lb-info h2{font-family:var(--myeongjo);font-weight:800;font-size:24px;letter-spacing:.04em;line-height:1.35}
+.lb-info dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:13px;border-top:1px solid rgba(58,49,40,.3);border-bottom:1px solid rgba(58,49,40,.3);padding:12px 0}
+.lb-info dt{color:var(--fade);letter-spacing:.1em}
+.lb-info .after{background:var(--night);color:#e9dfc9;padding:16px 18px;font-size:13.5px;line-height:1.85;letter-spacing:.02em}
+.lb-info .after small{display:block;font-size:10.5px;letter-spacing:.3em;color:#a8987a;margin-bottom:6px}
+.lb-info .same{display:flex;gap:12px;align-items:center;text-align:left;padding:8px;border:1px solid rgba(58,49,40,.35);transition:background .3s}
+.lb-info .same:hover{background:rgba(58,49,40,.07)}
+.lb-info .same img{width:62px;height:84px;object-fit:cover;object-position:top;flex:none;mix-blend-mode:multiply}
+.lb-info .same span{font-size:12.5px;line-height:1.6}
+.lb-info .same b{display:block;font-size:10.5px;letter-spacing:.25em;color:var(--fade);font-weight:400}
+.lb-info .chk{font-size:11px;color:var(--fade);letter-spacing:.05em}
+.lb-act{display:flex;gap:8px;margin-top:auto;padding-top:6px}
+.lb-act button{flex:1;padding:11px 10px;border:1px solid var(--ink);font-size:13px;letter-spacing:.12em;transition:background .3s,color .3s}
+.lb-act button:hover{background:var(--ink);color:var(--paper)}
+.lb-act .done{background:var(--ink);color:var(--paper)}
+.lb-close{position:absolute;top:8px;right:10px;z-index:2;font-size:24px;line-height:1;padding:6px 10px;color:var(--ink)}
+.lb-nav{position:fixed;top:50%;transform:translateY(-50%);font-size:30px;color:#e9dfc9;padding:16px;z-index:51;opacity:.6}
+.lb-nav:hover{opacity:1}.lb-nav.p{left:6px}.lb-nav.n{right:6px}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);z-index:60;background:var(--night);color:#e9dfc9;padding:10px 18px;font-size:12.5px;letter-spacing:.15em;opacity:0;transition:opacity .5s;pointer-events:none;white-space:nowrap}
+.toast.on{opacity:1}
+
+@media (max-width:820px){
+  .lb-box{grid-template-columns:1fr}
+  .lb-info{border-left:0;border-top:1px solid var(--rule)}
+  .lb-pic{min-height:260px;padding:20px}
+  .lb-pic img{max-height:52vh}
+  .lb-nav{top:auto;bottom:6px;transform:none}
+}
+@media (max-width:520px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 12px}.card .ph{height:130px;padding:10px}.card .tt{font-size:14px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<link rel="stylesheet" href="adcollection-play.css">
+</head>
+<body>
+<div class="sheet">
+  <div class="top"><a href="index.html">← 지면으로 돌아가기</a><span>京城野錄 · 附錄</span></div>
+  <header class="head">
+    <small>東亞日報 廣告面에서 오려 낸</small>
+    <h1>廣告帖</h1>
+    <p>광고 모아보기 · <b id="total"></b>장 · 1935 – 1939</p>
+  </header>
+
+  <nav class="modes" id="modes" aria-label="광고첩 보는 법">
+    <button type="button" data-m="all" aria-pressed="true"><b>모아보기</b><small>廣告帖</small></button>
+    <button type="button" data-m="quiz" aria-pressed="false"><b>무엇을 팔까</b><small>그림만 보고</small></button>
+    <button type="button" data-m="judge" aria-pressed="false"><b>허위광고 단속반</b><small>오늘이면 걸릴까</small></button>
+    <button type="button" data-m="alive" aria-pressed="false"><b>살아남은 광고</b><small>그 뒤 백 년</small></button>
+    <button type="button" data-m="price" aria-pressed="false"><b>그때 얼마였소</b><small>설렁탕으로 치면</small></button>
+    <button type="button" data-m="mine" aria-pressed="false"><b>나의 지면</b><small>오린 것 붙이기</small></button>
+  </nav>
+
+  <section class="mode on" id="m-all">
+
+  <div class="bar">
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <div class="sort" id="sort">
+      <button type="button" data-s="old" aria-pressed="true">옛것부터</button>
+      <button type="button" data-s="new" aria-pressed="false">최근부터</button>
+    </div>
+  </div>
+  <p class="count" id="count"></p>
+  <main class="grid" id="grid"></main>
+  </section>
+
+  <!-- 무엇을 팔까 -->
+  <section class="mode" id="m-quiz" aria-live="polite"></section>
+  <!-- 허위광고 단속반 -->
+  <section class="mode" id="m-judge" aria-live="polite"></section>
+  <!-- 살아남은 광고 -->
+  <section class="mode" id="m-alive"></section>
+  <!-- 그때 얼마였소 -->
+  <section class="mode" id="m-price"></section>
+  <!-- 나의 지면 -->
+  <section class="mode" id="m-mine"></section>
+
+  <div class="foot">
+    <span>광고 원문 · 동아일보 지면 (동아일보 아카이브)</span>
+    <span>본 광고첩은 경성야록이 지면을 다시 오려 엮은 것이올시다</span>
+  </div>
+</div>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="광고 크게 보기">
+  <button class="lb-nav p" id="lbPrev" aria-label="앞 광고">‹</button>
+  <div class="lb-box">
+    <button class="lb-close" id="lbClose" aria-label="닫기">×</button>
+    <div class="lb-pic" id="lbPic"><span class="frame"><img id="lbImg" alt=""><span class="snip"></span></span><span class="which" id="lbWhich"></span></div>
+    <div class="lb-info" id="lbInfo"></div>
+  </div>
+  <button class="lb-nav n" id="lbNext" aria-label="다음 광고">›</button>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="adcollection-data.js"></script>
+<script>
+(function(){
+  var DIR='assets/adcollection/', KEY='yk-ad-scraps';
+  var ADS=window.ADS||[], CATS=window.AD_CATS||[];
+  var $=function(s){return document.querySelector(s)};
+  var state={cat:'all',sort:'old',list:[],i:0,showSheet:false};
+  function scraps(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return[]}}
+  function saveScraps(a){try{localStorage.setItem(KEY,JSON.stringify(a))}catch(e){}}
+  function isCut(id){return scraps().indexOf(id)>=0}
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function fmt(a){var d=a.date.split('-'),y=+d[0];
+    return '소화 '+(y-1925)+'년 '+(+d[1])+'월 '+(+d[2])+'일 · '+y+'.'+(+d[1])+'.'+(+d[2])+(a.page?' · '+a.page+'면':'')}
+  function inCat(a,c){
+    if(c==='all')return true; if(c==='tb')return !!a.tb; if(c==='scrap')return isCut(a.id); return a.cat===c}
+  function catName(id){for(var i=0;i<CATS.length;i++)if(CATS[i].id===id)return CATS[i].name;return ''}
+
+  $('#total').textContent=ADS.length;
+
+  function drawTabs(){
+    $('#tabs').innerHTML=CATS.map(function(c){
+      var n=ADS.filter(function(a){return inCat(a,c.id)}).length;
+      return '<button type="button" class="tab" role="tab" data-c="'+c.id+'" aria-selected="'+(state.cat===c.id)+'">'+esc(c.name)+
+        (c.note?'<span class="nt">'+esc(c.note)+'</span>':'')+'<sup>'+n+'</sup></button>';
+    }).join('');
+  }
+  function draw(){
+    state.list=ADS.filter(function(a){return inCat(a,state.cat)}).slice().sort(function(a,b){
+      return state.sort==='old'?(a.date<b.date?-1:a.date>b.date?1:0):(a.date<b.date?1:a.date>b.date?-1:0)});
+    $('#count').textContent=catName(state.cat)+' · '+state.list.length+'장';
+    if(!state.list.length){
+      $('#grid').innerHTML='<p class="empty">'+(state.cat==='scrap'?'아직 오려 둔 광고가 업소.<br>광고를 크게 보고 「오려 두기」를 누르시오.':'이 분류엔 광고가 업소.')+'</p>';return}
+    $('#grid').innerHTML=state.list.map(function(a,i){
+      return '<button type="button" class="card" data-i="'+i+'" style="animation-delay:'+Math.min(i*35,500)+'ms">'+
+        '<span class="ph"><img src="'+DIR+a.id+'.jpg" alt="'+esc(a.title)+' 광고" loading="lazy">'+
+          '<span class="mk">'+(a.tb?'<i class="tb">결핵</i>':'')+(isCut(a.id)?'<i class="cut">✂ 오려 둠</i>':'')+'</span></span>'+
+        '<span class="meta"><span class="dt">'+esc(fmt(a))+'</span><span class="tt" style="display:block">'+esc(a.title)+'</span>'+
+          '<span class="wh">'+esc(a.who)+'</span>'+(a.after?'<span class="af">그 광고의 뒤 →</span>':'')+'</span></button>';
+    }).join('');
+  }
+  $('#tabs').addEventListener('click',function(e){var b=e.target.closest('.tab');if(!b)return;state.cat=b.dataset.c;drawTabs();draw()});
+  $('#sort').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;state.sort=b.dataset.s;
+    [].forEach.call($('#sort').children,function(x){x.setAttribute('aria-pressed',x===b)});draw()});
+  $('#grid').addEventListener('click',function(e){var c=e.target.closest('.card');if(c)open(+c.dataset.i)});
+
+  // 크게 보기
+  var lb=$('#lb'),last=null;
+  function show(){
+    var a=state.list[state.i];if(!a)return;
+    var src=state.showSheet&&a.sheet?DIR+'pages/'+a.sheet+'.jpg':DIR+a.id+'.jpg';
+    var im=$('#lbImg');im.style.width='';
+    im.onload=function(){var box=$('#lbPic'),bw=box.clientWidth-56,bh=Math.min(innerHeight-140,innerWidth<820?innerHeight*.52:9999);
+      var k=Math.min(bw/im.naturalWidth,bh/im.naturalHeight,state.showSheet?3:1.8);im.style.width=Math.round(im.naturalWidth*k)+'px'};
+    im.src=src;$('#lbImg').alt=state.showSheet?'그날 지면':a.title+' 광고';
+    $('#lbWhich').textContent=state.showSheet?'그날 지면 · '+(a.sheetNote||''):'광고 원문';
+    var cut=isCut(a.id);
+    $('#lbInfo').innerHTML=
+      '<span class="cat">'+esc(catName(a.cat))+(a.tb?' · 결핵 · 폐병':'')+'</span>'+
+      '<h2>'+esc(a.title)+'</h2>'+
+      '<dl><dt>광고주</dt><dd>'+esc(a.who)+'</dd><dt>실린 날</dt><dd>'+esc(fmt(a))+'</dd><dt>출처</dt><dd>동아일보</dd></dl>'+
+      (a.after?'<div class="after"><small>그 광고의 뒤</small>'+esc(a.after)+'</div>':'')+
+      (a.sheet?'<button type="button" class="same" id="lbSame"><img src="'+DIR+'pages/'+a.sheet+'.jpg" alt=""><span><b>'+(state.showSheet?'광고로 돌아가기':'그날 지면 펼쳐 보기')+'</b>'+esc(a.sheetNote||'')+'</span></button>':'')+
+      (a.check?'<p class="chk">※ 저해상 지면에서 읽은 문구라 원문 대조가 필요함</p>':'')+
+      '<div class="lb-act"><button type="button" id="lbCut" class="'+(cut?'done':'')+'">'+(cut?'✂ 오려 둔 광고':'✂ 엽서로 오려 두기')+'</button></div>';
+    var same=$('#lbSame');if(same)same.onclick=function(){state.showSheet=!state.showSheet;show()};
+    $('#lbCut').onclick=cutIt;
+  }
+  function open(i){last=document.activeElement;state.i=i;state.showSheet=false;show();lb.classList.add('on');document.body.style.overflow='hidden';$('#lbClose').focus()}
+  function close(){lb.classList.remove('on');document.body.style.overflow='';if(last)last.focus()}
+  function step(d){state.i=(state.i+d+state.list.length)%state.list.length;state.showSheet=false;show()}
+  $('#lbClose').onclick=close;$('#lbPrev').onclick=function(){step(-1)};$('#lbNext').onclick=function(){step(1)};
+  lb.addEventListener('click',function(e){if(e.target===lb)close()});
+  document.addEventListener('keydown',function(e){if(!lb.classList.contains('on'))return;
+    if(e.key==='Escape')close();else if(e.key==='ArrowLeft')step(-1);else if(e.key==='ArrowRight')step(1)});
+
+  // 오려 두기
+  var tt;
+  function toast(t){var el=$('#toast');el.textContent=t;el.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){el.classList.remove('on')},2600)}
+  function cutIt(){
+    var a=state.list[state.i],pic=$('#lbPic'),s=scraps();
+    if(s.indexOf(a.id)>=0){s.splice(s.indexOf(a.id),1);saveScraps(s);toast('오려 둔 것에서 뺏소');show();drawTabs();draw();return}
+    if(state.showSheet){state.showSheet=false;show()}
+    pic.classList.add('cutting');
+    setTimeout(function(){pic.classList.add('lifted')},1000);
+    setTimeout(function(){pic.classList.remove('cutting','lifted');s=scraps();if(s.indexOf(a.id)<0){s.push(a.id);saveScraps(s)}
+      toast('「'+a.title+'」 엽서 한 장 오려 두엇소 · '+s.length+'장');show();drawTabs();draw()},2000);
+  }
+
+  // 메인 광고 띠에서 넘어온 경우 (adcollection.html#neotone-1939)
+  drawTabs();draw();
+  var h=decodeURIComponent(location.hash.slice(1));
+  if(h){for(var k=0;k<state.list.length;k++)if(state.list[k].id===h){open(k);break}}
+})();
+</script>
+<script src="adcollection-play.js"></script>
+</body>
+</html>

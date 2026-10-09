@@ -1,0 +1,17 @@
+/* 메인 광고칸 — 상점 한 칸만 간결하게 (심인 · 오늘밤은 원래 그대로)
+   오늘밤과 같은 글자 짜임 · 칸 둘레에 오림선 한 줄 · 손을 대면 오림선이 돌고 가위가 지나감 */
+.ad2.shop1 .o.v1s{display:flex;flex-direction:column;justify-content:center;gap:10px;padding:0 34px;background:none}
+.v1s-cut{position:absolute;inset:6px;width:calc(100% - 12px);height:calc(100% - 12px);overflow:visible;pointer-events:none}
+.v1s-cut rect{fill:none;stroke:var(--ink);stroke-width:1;stroke-dasharray:6 5;opacity:.45;transition:opacity .4s}
+.ad2.shop1:hover .v1s-cut rect,.ad2.shop1:focus-visible .v1s-cut rect{opacity:.9;animation:v1sMarch 1.4s linear infinite}
+@keyframes v1sMarch{to{stroke-dashoffset:-22}}
+.v1s-sc{position:absolute;left:18px;top:-3px;font-style:normal;font-size:14px;line-height:1;color:var(--ink);background:var(--paper);padding:0 3px;transition:left 1.6s ease}
+.ad2.shop1:hover .v1s-sc,.ad2.shop1:focus-visible .v1s-sc{left:calc(100% - 40px)}
+.v1s-k{font-family:var(--myeongjo);font-weight:700;font-size:12px;letter-spacing:.2em;color:#4a3f31}
+.v1s-t{align-self:flex-start;font-family:var(--serif);font-weight:900;font-size:clamp(38px,3.3vw,54px);line-height:1;letter-spacing:.04em;color:var(--ink);padding-bottom:6px;border-bottom:3px solid var(--ink)}
+.v1s-d{font-family:var(--myeongjo);font-weight:700;font-size:13px;color:#2b2219}
+.ad2.shop1 .hj.gloss{color:inherit!important}
+@media (prefers-reduced-motion:reduce){.ad2.shop1 *{transition:none!important;animation:none!important}}
+.ad2.dept.shop1 .o.v1s{background:none!important;color:var(--ink)!important;box-shadow:none!important;border:0!important;align-items:flex-start!important;text-align:left;overflow:visible}
+.v1s-cut rect{width:calc(100% - 2px);height:calc(100% - 2px)}
+.v1s-sc{top:0;left:20px}

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- =========================================================================
+     경성야록 납량 특집 · 「열어 둔 대문」 (simin.html)
+     메인 광고면의 '심인 광고' 칸을 누르면 이 페이지로 옴 — 광고면이 아니라 장소 하나
+     -------------------------------------------------------------------------
+     · 화면 가득 밤의 한옥 대문 (미드저니 재현 · assets/simin/gate.jpg). 한 짝이 열려 잇고 안은 캄캄함
+     · 아래로 내리면 해가 바뀌며 대문에 '사람을 찻는 쪽지'가 한 장씩 덧붙음
+       1929 · 1931 · 1936 한지에 붓글씨 → 1948 등사판 → 1965 인쇄 전단 → 1991 복사 전단(사진) → 오늘 프린터 종이(어젯밤 사진)
+       종이와 글씨는 시대마다 다른데, 적힌 사람은 언제나 스물세 살 순이
+     · 마지막: 대문 안쪽 캄캄한 틈에 쪽지 하나 — 안에서 붙여 글씨가 뒤집혀 비침 (순이가 붙인 쪽지)
+     · 쪽지의 틀은 1920~30년대 동아일보 심인 광고의 문구에서 따옴. 순이 이야기 · 사진은 연출 (마지막에 밝힘)
+     · 장치: 스크롤 하나. 한자 업슴 · 번쩍임 업슴
+     · 쪽지 자리(NOTES의 x · y · w)는 대문 사진에 대한 % — 사진을 바꾸면 여기만 고치면 됨
+     ========================================================================= -->
+<meta charset="UTF-8">
+<script src="yk-zoom.js"></script><!-- 화면 배율 120% -->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>열어 둔 대문</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Brush+Script&family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@400;700;900&family=Noto+Serif+KR:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--brush:"Nanum Brush Script",cursive;--myeongjo:"Nanum Myeongjo",serif;--serif:"Noto Serif KR",serif;--sans:"Noto Sans KR",sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:#070605}
+body{height:calc(900vh / var(--ykz, 1));color:#1a140e;-webkit-font-smoothing:antialiased}
+.stage{position:sticky;top:0;height:calc(100vh / var(--ykz, 1));overflow:hidden;background:#070605}
+/* 사진을 화면에 꽉 차게 (비율 유지) — 쪽지는 이 틀에 대한 % 자리 */
+.scene{position:absolute;left:50%;top:50%;width:max(calc(100vw / var(--ykz, 1)),calc(calc(100vh / var(--ykz, 1)) * 1456 / 816));aspect-ratio:1456/816;transform:translate(-50%,-50%);container-type:inline-size;
+  background:url(assets/simin/gate.jpg) center/cover no-repeat}
+.scene::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 75% at 50% 50%,transparent 55%,rgba(5,4,3,.7) 100%)}
+/* 쪽지 공통: 풀로 붙인 종이 */
+.note{position:absolute;transform:translate(-50%,-50%) rotate(var(--r,0deg));opacity:0;transition:opacity 1.6s ease,transform 1.6s ease;
+  box-shadow:0 .25cqw .6cqw rgba(0,0,0,.55);filter:brightness(var(--lit,.78)) sepia(.15)}
+.note.on{opacity:1}
+.note.fresh{transform:translate(-50%,-50%) rotate(var(--r,0deg)) scale(1.04)}
+.note::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.12),transparent 60%)}
+.note p{margin-top:.35em}
+.note .t{text-align:center}
+/* 1929~1936: 한지에 붓글씨 */
+.hanji{padding:.8cqw .8cqw .7cqw;background:#e6dcc3;font-family:var(--brush);font-size:1.05cqw;line-height:1.2;color:#1b140c;
+  background-image:repeating-linear-gradient(17deg,rgba(120,100,70,.08) 0 1px,transparent 1px 6px),repeating-linear-gradient(-71deg,rgba(120,100,70,.06) 0 1px,transparent 1px 9px);
+  clip-path:polygon(1% 2%,30% 0,62% 1.5%,99% 0,100% 40%,98% 99%,55% 100%,20% 98%,0 100%,1.5% 60%)}
+.hanji .t{font-size:1.6cqw;letter-spacing:.2em}
+.hanji.old{--lit:.6;filter:brightness(.6) sepia(.5) contrast(.9)}
+/* 1948: 등사판 — 보랏빛 먹, 번진 활자 */
+.mimeo{padding:.7cqw .8cqw;background:#d9d3c5;font-family:var(--myeongjo);font-weight:800;font-size:.62cqw;line-height:1.55;color:#3c2a52;text-shadow:0 0 .12cqw rgba(60,42,82,.55)}
+.mimeo .t{font-size:1cqw;letter-spacing:.3em}
+/* 1965: 인쇄 전단 — 붉은 테 */
+.print{padding:.9cqw .9cqw;background:#eee6d2;font-family:var(--serif);font-weight:700;font-size:.6cqw;line-height:1.6;border:.25cqw solid #8a2a21;outline:.08cqw solid #8a2a21;outline-offset:-.6cqw}
+.print .t{font-size:1.05cqw;font-weight:900;letter-spacing:.12em;color:#8a2a21}
+/* 1991: 복사 전단 — 거친 검은 토너, 사진 */
+.copy{padding:.7cqw .8cqw;background:#f0eeea;font-family:var(--sans);font-weight:700;font-size:.56cqw;line-height:1.55;color:#111;
+  background-image:radial-gradient(rgba(0,0,0,.12) .06cqw,transparent .08cqw);background-size:.5cqw .5cqw}
+.copy .t{font-size:1.15cqw;font-weight:900;letter-spacing:.06em}
+.copy img,.a4 img{display:block;margin:.6cqw auto;width:55%;filter:grayscale(1) contrast(1.8) brightness(1.05)}
+/* 오늘: A4 프린터 종이 */
+.a4{padding:.8cqw .9cqw;background:#f6f5f1;font-family:var(--sans);font-weight:400;font-size:.6cqw;line-height:1.6;color:#111;--lit:.86}
+.a4 .t{font-size:1.3cqw;font-weight:900;letter-spacing:.02em}
+.a4 img{filter:grayscale(1) contrast(1.15)}
+.a4 small{display:block;text-align:center;font-size:.48cqw;color:#444}
+.who{font-weight:900}
+.sign{margin-top:.6em;display:flex;justify-content:space-between;font-size:.85em;opacity:.9}
+/* 마지막: 대문 안쪽에서 붙인 쪽지 — 글씨가 뒤집혀 비침 */
+.inside{padding:.6cqw .7cqw;background:#cfc6b2;font-family:var(--brush);font-size:.8cqw;line-height:1.25;color:#1b140c;--lit:.42;
+  transform:translate(-50%,-50%) scaleX(-1);transition:opacity 4s ease}
+.inside.on{opacity:.88}
+.inside .t{font-size:1.15cqw;letter-spacing:.15em}
+
+/* 해 · 안내 */
+.year{position:fixed;left:clamp(16px,calc(2.4vw / var(--ykz, 1)),36px);bottom:clamp(14px,calc(2.4vh / var(--ykz, 1)),28px);z-index:5;font-family:var(--serif);font-weight:900;font-size:clamp(18px,calc(1.6vw / var(--ykz, 1)),26px);letter-spacing:.2em;color:#cbb994;text-shadow:0 1px 6px #000;transition:opacity .8s}
+.year small{display:block;font-family:var(--myeongjo);font-weight:400;font-size:12px;letter-spacing:.14em;color:#8f7f60;margin-top:2px}
+.hint{position:fixed;left:50%;bottom:clamp(14px,calc(2.4vh / var(--ykz, 1)),28px);transform:translateX(-50%);z-index:5;font-family:var(--myeongjo);font-size:13px;letter-spacing:.3em;color:#a8977a;text-shadow:0 1px 4px #000;transition:opacity 1.2s}
+.hint.gone{opacity:0}
+.back{position:fixed;left:clamp(16px,calc(2.4vw / var(--ykz, 1)),36px);top:14px;z-index:5;font-family:var(--myeongjo);font-size:12.5px;letter-spacing:.16em;color:#8f7f60;text-decoration:none;border-bottom:1px solid rgba(143,127,96,.35);text-shadow:0 1px 4px #000}
+.back:hover{color:#e9d9ae}
+.credit{position:fixed;right:clamp(16px,calc(2.4vw / var(--ykz, 1)),36px);bottom:clamp(14px,calc(2.4vh / var(--ykz, 1)),28px);z-index:5;max-width:min(calc(46vw / var(--ykz, 1)),520px);text-align:right;font-family:var(--myeongjo);font-size:11px;line-height:1.7;color:#8f7f60;text-shadow:0 1px 4px #000;opacity:0;transition:opacity 3s}
+.credit.on{opacity:1}
+.hj.gloss{background:rgba(138,42,33,.18)}
+@media (prefers-reduced-motion:reduce){.note,.inside{transition:none}}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="scene" id="scene" role="img" aria-label="밤의 한옥 대문, 한 짝이 열려 있고 안은 캄캄함 (재현 사진)"></div>
+</div>
+<a class="back" href="index.html">본지로 도라가기</a>
+<p class="hint" id="hint">천천히 아래로 내리시오</p>
+<p class="year" id="year"></p>
+<p class="credit" id="credit">쪽지의 문구는 1920~30년대 동아일보 심인 광고의 틀(우인 · 당 ○세 · 인상착의 · 기별하면 후사)에서 따왔습니다. 순이와 그 가족의 이야기, 대문과 사진은 경성야록이 지은 연출(미드저니 재현)입니다.</p>
+
+<script>
+(function () {
+  var today = new Date();
+  // 쪽지: 자리(x · y · w = 사진에 대한 %) · 기울기 · 종이 · 글
+  var NOTES = [
+    { y1: '소화 사 년 겨울', y2: '1929', x: 60, y: 31, w: 11, r: -2, cls: 'hanji old',
+      html: '<p class="t">심인</p><p><span class="hj" data-ko="이 사람, 순이. 스물세 살. 왼쪽 눈 밑에 작은 점. 흰 저고리, 검정 치마. 지난 20일 밤 집을 나갔음. 아시는 분은 알려 주시면 후히 사례함.">우인 순이 당 이십삼 세. 왼편 눈 미테 적은 점. 흰 저고리 검정 치마. 지난 이십일 밤 집을 나갓슴. 아시는 이는 긔별하시면 후사함.</span></p><p class="sign"><span></span><span><span class="hj" data-ko="어머니 박씨">모 박씨</span></span></p>' },
+    { y1: '소화 륙 년 봄', y2: '1931', x: 38.5, y: 33, w: 9.5, r: 2.5, cls: 'hanji old',
+      html: '<p class="t">또 심인</p><p><span class="hj" data-ko="순이야, 어미가 병석에 누웠다. 이 종이를 보거든 곧 돌아오너라.">순이야, 어미가 병석에 누엇다. 이 조희를 보거든 곳 도라오너라.</span></p><p class="sign"><span></span><span><span class="hj" data-ko="어머니">어미</span></span></p>' },
+    { y1: '소화 십일 년 가을', y2: '1936', x: 60.5, y: 60, w: 9.5, r: 1.5, cls: 'hanji',
+      html: '<p class="t">또 심인</p><p><span class="hj" data-ko="오늘로 일곱 해. 어머니는 지난봄 세상을 떠나셨소. 대문은 그날처럼 열어 두었소.">오늘로 닐곱 해. 어머니는 지난봄 세상을 떠나섯소. 대문은 그날처럼 열어 두엇소.</span></p><p class="sign"><span></span><span>동생</span></p>' },
+    { y1: '해방 뒤', y2: '1948', x: 24, y: 40, w: 11, r: -1.5, cls: 'mimeo',
+      html: '<p class="t">사람을 찾습니다</p><p><span class="who">순이.</span> 집을 나갈 때 스물세 살. 왼쪽 눈 밑에 작은 점. 흰 저고리에 검정 치마.</p><p>해방이 되어도 돌아오지 않았습니다. 누님, 저는 아직 이 집에 삽니다.</p><p class="sign"><span></span><span>동생</span></p>' },
+    { y1: '', y2: '1965', x: 82, y: 42, w: 12, r: 1, cls: 'print',
+      html: '<p class="t">사람을 찾습니다</p><p><span class="who">고모 순이.</span> 1929년 11월 20일 밤 이 대문으로 나감. 당시 스물세 살.</p><p>아버지는 돌아가시는 날까지 이 대문을 잠그지 않으셨습니다. 저희도 잠그지 않겠습니다.</p><p class="sign"><span></span><span>조카</span></p>' },
+    { y1: '', y2: '1991', x: 41, y: 57, w: 11.5, r: -3, cls: 'copy',
+      html: '<p class="t">사람을 찾습니다</p><img src="assets/simin/face_then.jpg" alt=""><p><span class="who">김순이</span> (1929년 실종 당시 23세) 왼쪽 눈 밑 점.</p><p>지난달 이 골목에서 흰 저고리를 입은 젊은 여자를 보셨다는 분, 꼭 연락 주십시오.</p><p class="sign"><span></span><span>조카</span></p>' },
+    { y1: '', y2: String(today.getFullYear()), x: 31, y: 46, w: 13.5, r: 2, cls: 'a4',
+      html: '<p class="t">사람을 찾습니다</p><img src="assets/simin/face_now.jpg" alt=""><small>어젯밤, 이 대문 앞에서 찍힌 사진</small><p><span class="who">김순이.</span> 1929년 11월 20일 밤 이 대문으로 나간 스물세 살 여자. 흰 저고리, 검정 치마.</p><p>어젯밤 그 사람을 이 앞에서 보았다는 분이 또 계십니다. 여전히 스물세 살, 같은 옷이었다고 합니다.</p><p>이번에는 그 사람이 누군가를 찾고 있었다고 합니다.</p><p class="sign"><span></span><span>조카의 아들</span></p>' },
+    { y1: '', y2: '', x: 49.6, y: 45, w: 7.2, r: 0, cls: 'inside', inside: true,
+      html: '<p class="t">사람을 찻슴니다</p><p>찻는 이: 오늘 밤 이 대문 압헤 선 사람.</p><p>대문은 열려 잇슴니다.</p><p class="sign"><span></span><span>순이</span></p>' }
+  ];
+  var scene = document.getElementById('scene'), yearEl = document.getElementById('year'), hint = document.getElementById('hint'), credit = document.getElementById('credit');
+  var els = NOTES.map(function (n) {
+    var d = document.createElement('div'); d.className = 'note ' + n.cls;
+    d.style.left = n.x + '%'; d.style.top = n.y + '%'; d.style.width = n.w + '%'; d.style.setProperty('--r', n.r + 'deg');
+    d.innerHTML = n.html; scene.appendChild(d); return d;
+  });
+  // 마우스를 올리면 현대어 (옛 말투 쪽지만)
+  [].forEach.call(document.querySelectorAll('.hj'), function (h) {
+    var o = h.innerHTML, k = h.dataset.ko;
+    h.addEventListener('mouseenter', function () { h.textContent = k; h.classList.add('gloss'); });
+    h.addEventListener('mouseleave', function () { h.innerHTML = o; h.classList.remove('gloss'); });
+  });
+  // 스크롤 → 몇 장째까지 붙엇나
+  var shown = 0;
+  function update() {
+    var max = document.body.scrollHeight - innerHeight, p = max > 0 ? scrollY / max : 0;
+    var n = Math.min(NOTES.length, Math.floor(p * (NOTES.length + .6)));
+    if (n === shown) return;
+    els.forEach(function (e, i) {
+      var on = i < n;
+      e.classList.toggle('on', on);
+      e.classList.toggle('fresh', on && i === n - 1);
+    });
+    if (n > shown && n - 1 >= 0) { var e = els[n - 1]; setTimeout(function () { e.classList.remove('fresh'); }, 60); }
+    shown = n;
+    var cur = NOTES[Math.max(0, n - 1)];
+    yearEl.innerHTML = n === 0 ? '' : (cur.inside ? '' : cur.y2 + (cur.y1 ? '<small>' + cur.y1 + '</small>' : ''));
+    hint.classList.toggle('gone', n > 0);
+    credit.classList.toggle('on', n === NOTES.length);
+  }
+  addEventListener('scroll', update, { passive: true }); update();
+})();
+</script>
+</body>
+</html>

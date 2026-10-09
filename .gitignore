@@ -1,0 +1,16 @@
+# 깃허브에 안 올릴 것들 (내 컴퓨터에만 남음)
+
+# 예전 버전 보관함 · 참고 자료 · 화면 캡처
+_backup/
+_reference/
+_screens/
+
+# 압축 파일 · 설치용 더블클릭 파일
+*.zip
+*.zip.old
+*이거하나만_더블클릭.bat
+
+# 윈도우 · 맥이 저절로 만드는 파일
+Thumbs.db
+desktop.ini
+.DS_Store

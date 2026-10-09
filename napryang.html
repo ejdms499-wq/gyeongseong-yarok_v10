@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<script src="yk-zoom.js"></script><!-- 화면 배율 · 새로 열면 기록 초기화 -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>경성야록 · 납량란 — 자정의 백물어</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Serif+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="napryang.css?v=3">
+</head>
+<body class="locked">
+<div class="dim" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<!-- 머리 -->
+<header class="top">
+  <a class="mast" href="index.html"><b><span class="hj" data-ko="여름 괴담란">납량란</span></b><small>경성야록</small></a>
+  <button type="button" class="snd" id="snd" aria-pressed="false" aria-label="유성기 켜고 끄기"><img src="assets/np/v2_gramo.jpg" alt=""><span>유성기</span><i></i></button>
+  <a class="back" href="index.html"><span class="hj" data-ko="신문으로 돌아가기">본지로 도라가기</span></a>
+</header>
+
+<!-- 남은 초 -->
+<nav class="cbar" id="cbar" aria-label="남은 초 — 누르면 그 봉투로">
+  <span class="cb-k"><span class="hj" data-ko="남은 초">남은 초</span> <b id="left">6</b></span>
+  <span class="cb-row">
+    <a href="#ep1" data-n="1" aria-label="제1화"><i></i></a><a href="#ep2" data-n="2" aria-label="제2화"><i></i></a><a href="#ep3" data-n="3" aria-label="제3화"><i></i></a><a href="#ep4" data-n="4" aria-label="제4화"><i></i></a><a href="#ep5" data-n="5" aria-label="제5화"><i></i></a><a href="#ep6" data-n="6" aria-label="제6화"><i></i></a><a class="seven" data-n="7" aria-hidden="true"><i></i></a>
+  </span>
+</nav>
+
+<!-- ═══ 대문 ═══ -->
+<section class="gate" id="gate">
+  <div class="g-img">
+    <img src="assets/np/hero.jpg" alt="어두운 방, 낮은 상 위에 촛불 여섯 자루와 접힌 신문 (재현 그림)">
+    <span class="fl" style="--fx:32.35;--fy:34.8;--fw:3.3;--fh:11.89" data-n="1"><i></i></span><span class="fl" style="--fx:43.68;--fy:36.03;--fw:3.3;--fh:12.01" data-n="2"><i></i></span><span class="fl" style="--fx:55.49;--fy:36.76;--fw:3.3;--fh:11.27" data-n="3"><i></i></span><span class="fl" style="--fx:66.0;--fy:34.8;--fw:3.3;--fh:11.64" data-n="4"><i></i></span><span class="fl" style="--fx:72.94;--fy:36.03;--fw:3.3;--fh:10.78" data-n="5"><i></i></span><span class="fl" style="--fx:78.98;--fy:34.8;--fw:3.3;--fh:11.4" data-n="6"><i></i></span>
+    <div class="g-head"><p class="g-k">경성야록 · <span class="hj" data-ko="여름 괴담란">납량란</span></p>
+    <h1><span class="hj" data-ko="자정의 백 가지 이야기">자정의 백물어</span></h1>
+    <p class="g-def"><span class="hj" data-ko="촛불을 켜 두고 괴담을 한 편 할 때마다 초를 하나씩 끄던 밤 놀이">초를 켜 두고 괴담 한 편에 초 하나씩 끄던 밤 노리</span></p></div>
+    <div class="g-enter">
+      <button type="button" id="enter" class="g-go"><span class="hj" data-ko="촛불 켜고 들어가기">촛불 켜고 드러가기</span></button>
+      <button type="button" id="enterQuiet" class="g-q"><span class="hj" data-ko="소리 없이 들어가기">소리 업시 드러가기</span></button>
+      <p class="g-tip">소리를 켜고 보시기를 권하오 · 소리는 맨 우 유성기로 언제든 끌 수 잇소</p>
+    </div>
+  </div>
+</section>
+
+<div class="body" id="body">
+
+<!-- ═══ 편집국 · 자정 ═══ -->
+<section class="pro" id="pro">
+  <div class="pro-img"><img src="assets/np/v2_office.jpg" alt="자정의 편집국, 전등 하나 아래 책상에 봉투 여러 장 (재현 그림)"></div>
+  <div class="pro-tx">
+    <p class="pro-t"><span class="hj" data-ko="1934년 여름, 자정. 편집국">소화 구 년 녀름, 자정. 편집국</span></p>
+    <p><span class="hj" data-ko="그해 여름 동아일보는 「여름의 괴담」 원고를 모았다.">그해 녀름 본보는 「여름의 괴담」 원고를 모핫다.</span></p>
+    <p><span class="hj" data-ko="그 원고는 아직 찾지 못했다.">그 원고는 아즉 차저내지 못하얏다.</span></p>
+    <p class="pro-b"><span class="hj" data-ko="대신 책상 위에 봉투 여섯 장. 지면 곳곳에서 오려 낸, 기이한 기사들이다.">대신 책상 우에 봉투 여섯 장.<br>지면 곳곳에서 오려 낸, 긔이한 긔사들이다.</span></p>
+    <p class="pro-r"><span class="hj" data-ko="한 장을 다 읽거든, 초를 하나 끄시오.">한 장을 다 닑거든, 초를 하나 끄시오.</span></p>
+    <p class="g-src">하기원고모집 — 동아일보 1934년 7월 17일~8월 8일, 여섯 차례 게재 · 모집 항목 「여름의 괴담과 소화(일천 자 이내)」</p>
+  </div>
+</section>
+
+<!-- ═══ 제1화 · 현상실 ═══ -->
+<article class="sc" id="ep1" data-n="1">
+  <header class="sh"><p class="env"><span class="hj" data-ko="봉투 1">봉투 제일호</span></p>
+    <h2><span class="hj" data-ko="살해된 소녀의 무덤에 나타난 두 청년의 유령">참살된 소녀의 무덤에 두 청년의 유령</span></h2>
+    <p class="meta">동아일보 1926년 8월 13일 · 5면 · 연재 「미국에 잇는 진긔한 사실」</p></header>
+  <div class="stage s1" id="dev">
+    <img class="bg" src="assets/np/v2_ripple.jpg" alt="">
+    <div class="print"><img src="assets/n1-spirit.png" alt="1926년 8월 13일 동아일보 5면에 실린 사진. 어두운 배경에 하얀 사람 형체가 겹쳐 보인다"></div>
+    <div class="vcol">
+      <p class="a1"><span class="hj" data-ko="소녀를 죽였다는 혐의를 받아 참혹하게 사형당해 억울하게 죽은 영혼.">소녀를 죽엿다는 혐의를 바다서<br>참혹한 사형에 애매히 죽은 령혼.</span></p>
+      <p class="a2"><span class="hj" data-ko="「보통 사람은 말할 것도 없고 학자들까지……」">「보통 사람은 말할 것도 업고 학자들까……」</span></p>
+      <p class="a3"><span class="hj" data-ko="그 무덤 위에 서 있는 것은 누구인가.">그 무덤 우에 서 잇는 것은 누구인가.</span></p>
+    </div>
+    <p class="hint1" id="hint1"><span class="hj" data-ko="현상 중 — 사진이 떠오를 때까지 기다리시오">현상 중 — 사진이 떠오를 때까지 기다리시오</span></p>
+    <p class="cap1">본보 1926년 8월 13일 5면 게재 사진 · 현상실 그림은 재현</p>
+  </div>
+  <div class="v1" id="v1">
+    <p class="vq"><span class="hj" data-ko="이 사진은 — 도장을 하나 찍으시오">이 사진은 — 도장을 하나 찍으시오</span></p>
+    <div class="opts">
+      <button type="button" data-v="fact" data-o="사실" data-k="사실"><b>實</b><span>사실이엇다</span></button>
+      <button type="button" data-v="rumor" data-o="소문" data-k="소문"><b>傳</b><span>소문이엇다</span></button>
+      <button type="button" data-v="unknown" data-o="미상" data-k="알 수 없음"><b>?</b><span>끗내 미상</span></button>
+    </div>
+    <div class="vr" aria-live="polite"></div>
+  </div>
+  <footer class="sf">
+    <button type="button" class="src-b" aria-expanded="false"><span>원문 확인</span> ▾</button>
+    <button type="button" class="blow" disabled><span class="b-on"><span class="hj" data-ko="후— 초를 끄시오">후— 초를 끄시오</span></span><span class="b-wait">도장을 찍으면 끌 수 잇소</span><span class="b-off">초가 꺼젓소</span></button>
+  </footer>
+  <div class="drawer" hidden data-src="1"></div>
+</article>
+
+<!-- ═══ 제2화 · 벽보 ═══ -->
+<article class="sc" id="ep2" data-n="2">
+  <header class="sh"><p class="env"><span class="hj" data-ko="봉투 2">봉투 제이호</span></p>
+    <h2><span class="hj" data-ko="귀신 파는 사기꾼들">귀신 파는 협잡배들</span></h2>
+    <p class="meta">동아일보 1932년 11월 6일 · 7면 5단 · 사건 보도</p></header>
+  <div class="s2" id="s2">
+    <div class="bill" id="bill">
+      <div class="bill-in">
+        <div class="bill-f">
+          <img src="assets/np/v2_bill.jpg" alt="어두운 나무 벽에 붙은 낡은 벽보 (재현 그림)">
+          <div class="bill-ink">
+            <p class="bk">광 고</p>
+            <p class="bt">귀신<br><span>파오</span></p>
+            <p class="bd">집에 붓흔 귀신 떼여 드림<br>새 귀신도 잇슴 · 밤에만 문의</p>
+            <p class="bx">※ 편집국이 지어낸 벽보</p>
+          </div>
+          <button type="button" class="peel" id="peel" aria-label="벽보를 뜯어 보기"><span class="hj" data-ko="귀퉁이를 잡아 뜯으시오">귀퉁이를 잡아 뜨드시오</span></button>
+        </div>
+        <div class="bill-b">
+          <p class="bb-k">벽보 뒤에 붓흔 것 — 진짜 지면</p>
+          <img src="assets/np/c1932.jpg" alt="동아일보 1932년 11월 6일 7면 기사 제목 부분">
+          <p class="bb-ot">鬼神 파는 挾雜輩들<br>四名一團遂就縛</p>
+          <p class="bb-os">현금 一천여 원을 협잡한 자 東大門署員에게</p>
+        </div>
+      </div>
+    </div>
+    <figure class="shad" id="shad"><img src="assets/np/v2_shadows.jpg" alt="땅바닥에 드리운 네 사람의 그림자 (재현 그림)">
+      <figcaption>
+        <p><span class="hj" data-ko="귀신을 판다는 사람들. 한 패는 네 명.">귀신을 판다는 이들. 한 패는 네 사람.</span></p>
+        <p><span class="hj" data-ko="가로챈 돈은 현금 천여 원.">가로챈 돈은 현금 일천여 원.</span></p>
+        <p class="pun"><span class="hj" data-ko="결국 나타난 것은 귀신이 아니라 동대문서 경찰이었다.">결국 나타난 것은 귀신이 아니라 동대문서원이엇다.</span></p>
+      </figcaption>
+    </figure>
+  </div>
+  <footer class="sf">
+    <button type="button" class="src-b" aria-expanded="false"><span>원문 확인</span> ▾</button>
+    <button type="button" class="blow" disabled><span class="b-on"><span class="hj" data-ko="후— 초를 끄시오">후— 초를 끄시오</span></span><span class="b-wait">벽보를 뜨드면 끌 수 잇소</span><span class="b-off">초가 꺼젓소</span></button>
+  </footer>
+  <div class="drawer" hidden data-src="2"></div>
+</article>
+
+<!-- ═══ 제3화 · 안개 ═══ -->
+<article class="sc" id="ep3" data-n="3">
+  <header class="sh"><p class="env"><span class="hj" data-ko="봉투 3">봉투 제삼호</span></p>
+    <h2><span class="hj" data-ko="괴이한 증봉산">괴이한 증봉산</span></h2>
+    <p class="meta">동아일보 1927년 12월 23일 · 3면 5단 · 연재 「전설의 조선」 예순여섯째</p></header>
+  <div class="stage s3" id="fogStage">
+    <img class="bg" src="assets/np/v2_path.jpg" alt="달밤, 산 위 작은 사당으로 오르는 돌계단 (재현 그림)">
+    <span class="lamp3" aria-hidden="true"></span>
+    <canvas class="fog" id="fog" aria-hidden="true"></canvas>
+    <div class="mist" aria-hidden="true"><i style="background-image:url(assets/np/v2_mist1.jpg)"></i><i style="background-image:url(assets/np/v2_mist2.jpg)"></i></div>
+    <p class="fog-h" id="fogH"><span class="hj" data-ko="마우스로 안개를 걷으시오">손으로 안개를 거드시오</span></p>
+  </div>
+  <div class="tx">
+    <p><span class="hj" data-ko="1927년 겨울, 동아일보는 「전설의 조선」을 연재하고 있었다. 예순여섯째 이야기의 제목은 「괴이한 증봉산」.">소화 이 년 겨을, 본보는 「전설의 조선」을 련재하고 잇섯다.<br>예순여섯재 이약이의 제목은 「괴이한 증봉산」.</span></p>
+    <p class="pun after"><span class="hj" data-ko="안개가 걷히자 산 위에 불이 하나. 그러나 이 산의 무엇이 괴이한지는, 아직 아무도 읽지 못했다.">안개가 거치자 산 우에 불이 하나.<br>그러나 이 산의 무엇이 괴이한지는, 아즉 아모도 닑지 못하얏다.</span></p>
+  </div>
+  <footer class="sf">
+    <button type="button" class="src-b" aria-expanded="false"><span>원문 확인</span> ▾</button>
+    <button type="button" class="blow" disabled><span class="b-on"><span class="hj" data-ko="후— 초를 끄시오">후— 초를 끄시오</span></span><span class="b-wait">안개를 거드면 끌 수 잇소</span><span class="b-off">초가 꺼젓소</span></button>
+  </footer>
+  <div class="drawer" hidden data-src="3"></div>
+</article>
+
+<!-- ═══ 제4화 · 교장 집 ═══ -->
+<article class="sc" id="ep4" data-n="4">
+  <header class="sh"><p class="env"><span class="hj" data-ko="봉투 4">봉투 제사호</span></p>
+    <h2><span class="hj" data-ko="교장 집의 환극(幻劇)">교장 집의 환극</span></h2>
+    <p class="meta">동아일보 1924년 11월 18일 · 2면 5단 · 사건 보도</p></header>
+  <div class="door">
+    <img src="assets/np/v2_shoes.jpg" alt="밤, 열린 미닫이문 앞에 놓인 남자 신과 여자 신 (재현 그림)">
+    <p><span class="hj" data-ko="수상한 부부가 한 번 다녀갔다.">수상한 부부가 한 번 다녀갓다.</span><small><span class="hj" data-ko="그 뒤, 이 집에서">그 뒤, 이 집에서 —</span></small></p>
+  </div>
+  <p class="how"><span class="hj" data-ko="불 꺼진 방이오. 촛불을 들고 방 안을 비춰 보시오.">불 꺼진 방이오. 촛불을 들고 방 안을 비처 보시오.</span></p>
+  <div class="stage s4" id="room">
+    <img class="bg" src="assets/np/ep4.jpg" alt="달빛 드는 방, 벽에 수화기가 매달린 전화기, 빈 의자, 열린 서랍 (재현 그림)">
+    <div class="shade" aria-hidden="true"></div>
+    <button type="button" class="hs" style="--x:26%;--y:70%" data-c="1" aria-label="의자"></button>
+    <button type="button" class="hs" style="--x:38%;--y:58%" data-c="2" aria-label="전화기"></button>
+    <button type="button" class="hs" style="--x:89%;--y:84%" data-c="3" aria-label="서랍"></button>
+    <button type="button" class="hs" style="--x:89%;--y:12%" data-c="4" aria-label="창"></button>
+    <div class="ring" id="ring"><img src="assets/np/v2_phone.jpg" alt="벽에 걸린 전화기, 수화기가 줄에 매달려 있다 (재현 그림)"></div>
+    <p class="cnt"><span id="cnt">0</span> / 4</p>
+  </div>
+  <ol class="clues" id="clues">
+    <li data-c="1"><span class="hj" data-ko="그 뒤, 주부가 쓰러졌다.">그 뒤, 주부가 쓰러졋다.</span></li>
+    <li data-c="2"><span class="hj" data-ko="전화기를 쥔 채, 죽은 듯 말이 없었다.">뎐화통 잡은 채, 죽은 듯 말이 업섯다.</span></li>
+    <li data-c="3"><span class="hj" data-ko="현금도, 저금 통장도 간 곳이 없었다.">현금도, 뎌금 통장도 간 곳이 업섯다.</span></li>
+    <li data-c="4"><span class="hj" data-ko="도립사범학교 교장, 사사 씨의 집이었다.">도립사범학교 교장, 좌좌 씨의 집이엇다.</span></li>
+  </ol>
+  <div class="tx done4">
+    <p><span class="hj" data-ko="신문은 이 밤을 「환극(幻劇)」이라 불렀다.">신문은 이 밤을 「환극」이라 불넛다.</span></p>
+    <p class="pun"><span class="hj" data-ko="그녀는 누구에게 전화를 걸려 했나.">그는 누구에게 뎐화를 걸녀 하엿나.</span></p>
+  </div>
+  <footer class="sf">
+    <button type="button" class="src-b" aria-expanded="false"><span>원문 확인</span> ▾</button>
+    <button type="button" class="blow" disabled><span class="b-on"><span class="hj" data-ko="후— 초를 끄시오">후— 초를 끄시오</span></span><span class="b-wait">방 안을 다 비추면 끌 수 잇소</span><span class="b-off">초가 꺼젓소</span></button>
+  </footer>
+  <div class="drawer" hidden data-src="4"></div>
+</article>
+
+<!-- ═══ 제5화 · 취조 ═══ -->
+<article class="sc" id="ep5" data-n="5">
+  <header class="sh"><p class="env"><span class="hj" data-ko="봉투 5">봉투 제오호</span></p>
+    <h2><span class="hj" data-ko="대답하지 않는 혐의자">대답하지 안는 혐의자</span></h2>
+    <p class="meta">동아일보 1932년 11월 11일 · 2면 5단 · 사건 보도</p></header>
+  <div class="stage s5">
+    <img class="bg" src="assets/np/ep5.jpg" alt="빈 취조실, 책상과 의자 (재현 그림)">
+    <img class="bulb" id="bulb" src="assets/np/v2_bulb.jpg" alt="">
+    <div class="ledger" id="ledger">
+      <p class="lg-h"><b>취조 긔록</b><em>편집국이 꾸민 장면</em></p>
+      <div class="lg-lines" id="lgLines" aria-live="polite"></div>
+      <form class="lg-f" id="lgF" autocomplete="off">
+        <input id="lgQ" maxlength="30" placeholder="무를 말을 적으시오" aria-label="혐의자에게 물을 말">
+        <button type="submit">묻기</button>
+      </form>
+      <p class="lg-chips"><button type="button">일흠이 무엇이오</button><button type="button">그날 밤 어듸 잇섯소</button><button type="button">웨 말을 안 하오</button></p>
+    </div>
+  </div>
+  <div class="tx done5">
+    <p class="stamp">긔괴!</p>
+    <p><span class="hj" data-ko="살인강도 혐의를 받던 사람이, 조사를 받던 중 말을 못 하게 되었다.">살인강도 혐의를 밧던 사람이, 취조를 밧던 중 말을 못 하게 되엿다.</span></p>
+    <p class="pun"><span class="hj" data-ko="신문은 제목 맨 앞에 「기괴!」라고 적었다.">신문은 제목 맨 압헤 「긔괴!」라고 적엇다.</span></p>
+  </div>
+  <footer class="sf">
+    <button type="button" class="src-b" aria-expanded="false"><span>원문 확인</span> ▾</button>
+    <button type="button" class="blow" disabled><span class="b-on"><span class="hj" data-ko="후— 초를 끄시오">후— 초를 끄시오</span></span><span class="b-wait">세 번 무르면 끌 수 잇소</span><span class="b-off">초가 꺼젓소</span></button>
+  </footer>
+  <div class="drawer" hidden data-src="5"></div>
+</article>
+
+<!-- ═══ 제6화 · 철길 ═══ -->
+<article class="sc quiet" id="ep6" data-n="6">
+  <header class="sh"><p class="env"><span class="hj" data-ko="봉투 6">봉투 제륙호</span></p>
+    <h2><span class="hj" data-ko="평원선 철길 위에서">평원선 철길 우에서</span></h2>
+    <p class="meta">동아일보 1938년 12월 11일 · 4면 9단 · 사건 보도</p></header>
+  <div class="stage s6" id="s6">
+    <img class="bg" src="assets/np/v2_train.jpg" alt="눈 덮인 밤 철길, 멀리서 다가오는 기차 불빛 (재현 그림 · 사람 없음)">
+    <div class="v6">
+      <p><span class="hj" data-ko="평원선 철길 위에, 누군가 가로누워 있었다.">평원선 철길 우에, 누군가 가로누어 잇섯다.</span></p>
+      <p><span class="hj" data-ko="신문은 그를 「괴시체」라 불렀다.">신문은 그를 「괴시체」라 불넛다.</span></p>
+      <p class="pun"><span class="hj" data-ko="한 사람의 죽음이다. 경성야록은 제목 너머를 지어내지 않는다.">한 사람의 죽엄이다.<br>본 야록은 제목 넘어를 지어내지 안는다.</span></p>
+    </div>
+  </div>
+  <footer class="sf">
+    <button type="button" class="src-b" aria-expanded="false"><span>원문 확인</span> ▾</button>
+    <button type="button" class="blow"><span class="b-on"><span class="hj" data-ko="초를 끄고, 잠시 묵념">초를 끄고, 잠시 묵념</span></span><span class="b-off">초가 꺼젓소</span></button>
+  </footer>
+  <div class="drawer" hidden data-src="6"></div>
+</article>
+
+<!-- ═══ 끝 · 일곱째 초 ═══ -->
+<section class="end" id="end">
+  <div class="e-dark">
+    <div class="e-cv"><img class="e-out" src="assets/np/v2_snuffed.jpg" alt=""><img class="e-smoke" src="assets/np/v2_smoke.jpg" alt=""></div>
+    <p class="e-1"><span class="hj" data-ko="초가 다 꺼졌소.">초가 다 꺼젓소.</span></p>
+    <p class="e-2"><span class="hj" data-ko="그런데 — 아무도 켜지 않은 초가 하나 있소.">그런데 — 아모도 켜지 안은 초가 하나 잇소.</span></p>
+  </div>
+  <div class="e-sheet">
+    <img class="bg" src="assets/np/v2_sheet.jpg" alt="촛불 하나 아래 원고지와 펜 (재현 그림)">
+    <div class="wg" id="wg">
+      <p class="wg-h"><b><span class="hj" data-ko="제7화 — 당신의 괴담">제칠화 — 당신의 괴담</span></b><span>일천 자 이내</span></p>
+      <textarea id="wgT" maxlength="1000" spellcheck="false" placeholder="구십 년 만에 다시 모집하오." aria-label="당신의 괴담"></textarea>
+      <p class="wg-f"><span><b id="wgN">0</b> / 1000</span><button type="button" id="wgB"><span class="hj" data-ko="봉투에 넣어 투고함으로">봉투에 너어 투고함으로</span></button></p>
+    </div>
+    <div class="post" id="post">
+      <img src="assets/np/v2_box.jpg" alt="벽에 걸린 나무 투고함 (재현 그림)">
+      <span class="envl" aria-hidden="true"></span>
+      <p id="wgM" aria-live="polite"></p>
+    </div>
+  </div>
+  <p class="relight"><button type="button" id="relight"><span class="hj" data-ko="초를 다시 켜기">초를 다시 켜기</span></button></p>
+</section>
+
+<footer class="foot">
+  <p class="note">그림은 모두 재현 그림이오 (실제 사진은 제1화 한 장, 실제 지면은 제2화·제4화 원문 서랍의 지면 사진). 「편집국 야근」 틀, 벽보, 문답, 일곱째 초는 편집국의 연출이오. 제1화 — 제목·부제·첫머리 한 줄과 사진은 1926년 8월 13일자 동아일보 지면에서 확인했고, 나머지 문장은 편집국이 썼습니다. 제2화~제6화 — 기사 제목·부제·발행일·지면은 국사편찬위원회 한국사데이터베이스의 동아일보 기사 기록을 따랐고, 본문은 아직 원문으로 확인하지 못해 인용하지 않았습니다. 각 편의 글은 제목·부제에서 확인되는 사실 밖의 경위·인물·대사·결말을 지어내지 않았습니다.</p>
+  <a href="index.html"><span class="hj" data-ko="신문으로 돌아가기">본지로 도라가기</span></a>
+</footer>
+</div>
+
+<script src="napryang.js?v=2"></script>
+<script src="yk-guide.js?v=15"></script>
+</body>
+</html>
