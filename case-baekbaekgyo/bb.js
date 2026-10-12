@@ -567,7 +567,7 @@
   function upd() {
     var r = f.getBoundingClientRect(), vh = window.innerHeight, total = r.height - vh;
     var p = total > 0 ? Math.min(1, Math.max(0, -r.top / total)) : 1;
-    var n = Math.floor(p * (steps.length + 1.5));
+    var n = Math.floor(p * (steps.length + 1.5)) + (r.top < vh * .5 ? 2 : 0);
     steps.forEach(function (el, i) { el.classList.toggle('on', i < n || p > .97); });
   }
   window.addEventListener('scroll', upd, { passive: true }); window.addEventListener('resize', upd); upd();
@@ -580,7 +580,7 @@
   function size() { if (!cv) return; var r = cv.getBoundingClientRect(); W = cv.width = Math.round(r.width); Hh = cv.height = Math.round(r.height); fl = []; for (var i = 0; i < 70; i++) fl.push({ x: Math.random() * W, y: Math.random() * Hh, r: .6 + Math.random() * 1.6, v: .25 + Math.random() * .5, d: Math.random() * 6 }); }
   function upd() {
     var r = t.getBoundingClientRect(), vh = window.innerHeight, p = (vh - r.top) / (r.height + vh); p = Math.max(0, Math.min(1, p));
-    var o = 1 - Math.min(1, Math.abs(p - .5) / .3); t.style.setProperty('--th-o', Math.max(0, o).toFixed(3));
+    var o = 1 - Math.min(1, Math.abs(p - .5) / .42); t.style.setProperty('--th-o', Math.max(0, o).toFixed(3));
     on = r.bottom > 0 && r.top < vh;
   }
   window.addEventListener('scroll', upd, { passive: true }); window.addEventListener('resize', function () { size(); upd(); }); size(); upd();

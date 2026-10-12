@@ -235,3 +235,11 @@
 .hg-dawn p{position:absolute;left:6%;top:auto;bottom:44px;text-align:left;max-width:15em;line-height:1.7;font-family:var(--serif);font-weight:700;font-size:19px;letter-spacing:.26em;color:#efe6cf;text-shadow:0 1px 8px rgba(0,0,0,.6)}
 .hg-dawn small{position:absolute;right:16px;bottom:10px;font-size:10.5px;letter-spacing:.14em;color:rgba(239,230,207,.65)}
 .hg-dawn+.hg-foot{margin-top:24px}
+/* 폰 — 호외 한 장의 머리 : 날짜가 옆으로 삐져나가지 않게 */
+@media (max-width:600px){
+  .sh{padding:18px 14px 14px}
+  .sh-mh{grid-template-columns:auto 1fr;gap:8px}
+  .sh-mh .sh-date{grid-column:1/-1;flex-direction:row;justify-content:space-between;text-align:left}
+  .sh-name b{font-size:34px}
+  .sh-name em{font-size:17px}
+}
